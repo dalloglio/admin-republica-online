@@ -1,7 +1,9 @@
-import Hello from '../components/Hello'
+import Home from '@/components/Home'
+import UsersList from '@/components/Users/List'
 
 const routes = [
-    { path: '/', name: 'Hello', component: Hello }
+    { path: '/', name: 'home', component: Home },
+    { path: '/usuarios', name: 'users', component: UsersList }
 ]
 
 export default routes

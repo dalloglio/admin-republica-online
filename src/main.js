@@ -7,14 +7,14 @@ import App from './App'
 import routes from './router'
 
 const router = new VueRouter({
-  routes
+    routes
 })
 
 Vue.config.productionTip = false
 
 new Vue({
-  el: '#app',
-  router,
-  template: '<App/>',
-  components: { App }
+    el: '#app',
+    router,
+    template: '<App/>',
+    components: { App }
 })

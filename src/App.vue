@@ -16,17 +16,16 @@ export default {
     name: 'app',
     components: {
         Navbar
-    },
-    styles: [
-        require('bootstrap/dist/css/bootstrap.min.css')
-    ]
+    }
 }
 </script>
 
 <style>
-#app {
+body {
+    padding-top: 51px;
+    padding-bottom: 51px;
+    background-color: #eee;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    margin-top: 51px;
 }
 </style>

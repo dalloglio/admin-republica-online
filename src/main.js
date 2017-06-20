@@ -3,29 +3,20 @@ import { sync } from 'vuex-router-sync'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VueResource from 'vue-resource'
-import VueRouter from 'vue-router'
 
 Vue.use(Vuex)
 Vue.use(VueResource)
-Vue.use(VueRouter)
 
 import App from './App'
-import routes from './router'
+import router from './router'
 import VuexStore from './vuex/store'
+import Auth from './auth'
 
-Vue.http.options.root = process.env.SERVER
-
-Vue.http.interceptors.push((request, next) => {
-    request.headers.set('Authorization', 'Bearer ' + process.env.ACCESS_TOKEN)
-    next()
-})
+Vue.http.options.root = process.env.API_URL
 
 const store = new Vuex.Store(VuexStore)
 
-const router = new VueRouter({
-    mode: 'history',
-    routes
-})
+Auth.checkAuth()
 
 sync(store, router)
 
@@ -35,6 +26,15 @@ new Vue({
     el: '#app',
     router,
     store,
+    watch: {
+        '$route' (to, from) {
+            if (to.name !== 'auth.login' && to.name !== 'auth.logout') {
+                if (Auth.isAuthenticated() === false) {
+                    Auth.redirectLogin()
+                }
+            }
+        }
+    },
     template: '<App/>',
     components: { App }
 })

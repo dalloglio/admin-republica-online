@@ -1,66 +1,101 @@
 <template>
-  <v-app light>
+  <v-app :dark="false" :light="true" standalone>
+
     <v-navigation-drawer
-      persistent
-      :mini-variant="miniVariant"
-      :clipped="clipped"
       v-model="drawer"
+      :permanent="false"
+      :persistent="true"
+      :temporary="false"
+      :clipped="true"
+      :floating="false"
+      :mini-variant="false"
+      absolute
+      overflow
       enable-resize-watcher
     >
-      <v-list>
-        <v-list-tile
-          value="true"
-          v-for="(item, i) in items"
-          :key="i"
-        >
-          <v-list-tile-action>
-            <v-icon light v-html="item.icon"></v-icon>
-          </v-list-tile-action>
+      <v-list class="pa-0">
+        <v-list-tile avatar tag="div">
+          <v-list-tile-avatar>
+            <img src="https://randomuser.me/api/portraits/men/85.jpg" />
+          </v-list-tile-avatar>
           <v-list-tile-content>
-            <v-list-tile-title v-text="item.title"></v-list-tile-title>
+            <v-list-tile-title>John Leider</v-list-tile-title>
+          </v-list-tile-content>
+          <v-list-tile-action>
+            <v-btn icon @click.native.stop="mini = !mini">
+              <v-icon>chevron_left</v-icon>
+            </v-btn>
+          </v-list-tile-action>
+        </v-list-tile>
+      </v-list>
+
+      <v-divider></v-divider>
+
+      <v-list two-line subheader>
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile-title>Anúncios</v-list-tile-title>
+            <v-list-tile-sub-title>Gerenciar anúncios</v-list-tile-sub-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile-title>Categorias</v-list-tile-title>
+            <v-list-tile-sub-title>Gerenciar categorias</v-list-tile-sub-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile-title>Parceiros</v-list-tile-title>
+            <v-list-tile-sub-title>Gerenciar parceiros</v-list-tile-sub-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile-title>Repúblicas</v-list-tile-title>
+            <v-list-tile-sub-title>Gerenciar repúblicas</v-list-tile-sub-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile-title>Usuários</v-list-tile-title>
+            <v-list-tile-sub-title>Gerenciar usuários</v-list-tile-sub-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar fixed>
-      <v-toolbar-side-icon @click.native.stop="drawer = !drawer" light></v-toolbar-side-icon>
-      <v-toolbar-title v-text="title"></v-toolbar-title>
-      <v-spacer></v-spacer>
+    <v-toolbar>
+      <v-toolbar-side-icon @click.native.stop="drawer = !drawer"></v-toolbar-side-icon>
     </v-toolbar>
 
     <main>
-      <v-container fluid>
-        <v-slide-y-transition mode="out-in">
-          <v-layout column align-center>
-            <img src="/static/v.png" alt="Vuetify.js" class="mb-5">
-            <h2>República.online</h2>
-          </v-layout>
-        </v-slide-y-transition>
+      <v-container fluid grid-list-md>
+        <router-view></router-view>
       </v-container>
     </main>
 
-    <v-footer :fixed="fixed">
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+    <v-footer fixed>
+      <v-spacer></v-spacer>
+      <div>© {{ new Date().getFullYear() }}</div>
     </v-footer>
+
   </v-app>
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        clipped: true,
-        drawer: true,
-        fixed: true,
-        items: [
-          { icon: 'bubble_chart', title: 'Inspire' }
-        ],
-        miniVariant: false,
-        title: 'Admin'
-      }
+export default {
+  data () {
+    return {
+      title: 'República Online',
+      drawer: true
     }
   }
+}
 </script>
 
 <style lang="stylus">

@@ -1,14 +1,14 @@
 <template lang="html">
   <div class="menu">
-    <el-menu mode="vertical" default-active="0" theme="dark">
+    <el-menu mode="vertical" default-active="0" theme="dark" :router="true">
       <app-menu-profile></app-menu-profile>
       <el-menu-item-group title="Cadastros">
-        <el-menu-item index="1"><i class="fa fa-fw fa-clone"></i>Anúncios</el-menu-item>
-        <el-menu-item index="2"><i class="fa fa-fw fa-picture-o"></i>Banners</el-menu-item>
-        <el-menu-item index="3"><i class="fa fa-fw fa-share-alt"></i>Categorias</el-menu-item>
-        <el-menu-item index="4"><i class="fa fa-fw fa-list-ul"></i>Filtros</el-menu-item>
-        <el-menu-item index="5"><i class="fa fa-fw fa-briefcase"></i>Parceiros</el-menu-item>
-        <el-menu-item index="6"><i class="fa fa-fw fa-users"></i>Usuários</el-menu-item>
+        <el-menu-item index="1" :route="{ name: 'users.index' }"><i class="fa fa-fw fa-clone"></i>Anúncios</el-menu-item>
+        <el-menu-item index="2" :route="{ name: 'users.index' }"><i class="fa fa-fw fa-picture-o"></i>Banners</el-menu-item>
+        <el-menu-item index="3" :route="{ name: 'users.index' }"><i class="fa fa-fw fa-share-alt"></i>Categorias</el-menu-item>
+        <el-menu-item index="4" :route="{ name: 'users.index' }"><i class="fa fa-fw fa-list-ul"></i>Filtros</el-menu-item>
+        <el-menu-item index="5" :route="{ name: 'users.index' }"><i class="fa fa-fw fa-briefcase"></i>Parceiros</el-menu-item>
+        <el-menu-item index="6" :route="{ name: 'users.index' }"><i class="fa fa-fw fa-users"></i>Usuários</el-menu-item>
       </el-menu-item-group>
       <el-menu-item-group title="Formulários">
         <el-menu-item index="7"><i class="fa fa-fw fa-envelope-o"></i>Contatos</el-menu-item>

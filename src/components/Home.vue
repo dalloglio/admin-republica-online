@@ -1,5 +1,5 @@
 <template>
-  <div class="hello bg-black">
+  <div class="home bg-black">
     <el-row type="flex" justify="center" align="middle">
       <el-col>
         <i class="fa fa-2x fa-paw"></i>
@@ -12,12 +12,12 @@
 
 <script>
 export default {
-  name: 'hello'
+  name: 'home'
 }
 </script>
 
 <style scoped>
-  .hello {
+  .home {
     height: 100%;
     text-align: center;
   }

@@ -61,9 +61,16 @@ body {
 }
 #app > main {
   position: relative;
-  padding-left: 200px;
-  width: calc(100% - 200px);
-  height: calc(100% - 60px);
+  margin-left: 200px;
+  padding: 15px;
+  width: calc(100% - 230px);
+  height: calc(100% - 90px);
   z-index: 1;
+}
+#app > main .el-breadcrumb {
+  margin: 10px auto;
+}
+#app > main .el-breadcrumb .el-breadcrumb__item {
+  padding: 5px;
 }
 </style>

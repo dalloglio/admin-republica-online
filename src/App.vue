@@ -73,4 +73,19 @@ body {
 #app > main .el-breadcrumb .el-breadcrumb__item {
   padding: 5px;
 }
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both
+}
+.right {
+  float: right;
+}
+.left {
+  float: left;
+}
 </style>

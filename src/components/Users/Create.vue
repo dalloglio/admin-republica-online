@@ -9,13 +9,13 @@
     <h1>
       Criar usuário
       <el-button-group class="right">
-        <el-button type="primary">Voltar</el-button>
+        <el-button type="primary" @click="url.go({ name: 'users.index' })">Voltar</el-button>
       </el-button-group>
     </h1>
 
     <el-card class="box-card">
       <el-form label-position="top" :model="form">
-        <el-form-item label="Name">
+        <el-form-item label="Nome">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="E-mail">
@@ -24,7 +24,7 @@
         <el-form-item label="Senha">
           <el-input v-model="form.password"></el-input>
         </el-form-item>
-        <el-button type="success">Salvar</el-button>
+        <el-button type="success" @click="save">Salvar</el-button>
       </el-form>
     </el-card>
   </div>
@@ -40,6 +40,11 @@ export default {
         email: '',
         password: ''
       }
+    }
+  },
+  methods: {
+    save () {
+      console.log('Implementar...')
     }
   }
 }

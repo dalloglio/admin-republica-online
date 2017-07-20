@@ -8,7 +8,7 @@
     <h1>
       Usuários
       <el-button-group class="right">
-        <el-button type="success">Criar usuário</el-button>
+        <el-button type="success" @click="url.go({ name: 'users.create' })">Criar usuário</el-button>
       </el-button-group>
     </h1>
 
@@ -22,7 +22,7 @@
         width="150">
         <template scope="scope">
           <el-button-group>
-            <el-button type="info" size="small">Editar</el-button>
+            <el-button type="info" size="small" @click="url.go({ name: 'users.edit', params: { id: 1 } })">Editar</el-button>
             <el-button type="danger" size="small" @click.native.prevent="deleteRow(scope.$index, users)">Excluir</el-button>
           </el-button-group>
         </template>

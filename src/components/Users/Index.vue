@@ -1,11 +1,16 @@
-<template lang="html">
+<template>
   <div class="users index">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: 'home' }">Home</el-breadcrumb-item>
       <el-breadcrumb-item>Usuários</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <h1>Usuários</h1>
+    <h1>
+      Usuários
+      <el-button-group class="right">
+        <el-button type="success">Criar usuário</el-button>
+      </el-button-group>
+    </h1>
 
     <el-table :data="users" :default-sort="{ prop: 'name', order: 'ascending' }" border stripe fit>
       <el-table-column prop="name" label="Nome" sortable></el-table-column>
@@ -57,5 +62,5 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style>
 </style>

@@ -31,6 +31,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'users-index',
   methods: {
@@ -41,21 +42,11 @@ export default {
       return row.name + ': ' + row.email
     }
   },
-  data () {
-    return {
-      users: [{
-        name: 'Usuário A',
-        email: 'user@email.com'
-      }, {
-        name: 'Usuário B',
-        email: 'user@email.com'
-      }, {
-        name: 'Usuário C',
-        email: 'user@email.com'
-      }, {
-        name: 'Usuário D',
-        email: 'user@email.com'
-      }]
+  computed: {
+    users () {
+      return this.$store.dispatch('getUsers').then((response) => {
+        console.log(response)
+      })
     }
   }
 }

@@ -12,11 +12,10 @@
       </el-button-group>
     </h1>
 
-    <el-table :data="users" :default-sort="{ prop: 'name', order: 'ascending' }" border stripe fit>
+    <el-table :data="users" empty-text="Não há registros..." :default-sort="{ prop: 'name', order: 'ascending' }" border stripe fit>
       <el-table-column prop="name" label="Nome" sortable></el-table-column>
       <el-table-column prop="email" label="E-mail" :formatter="formatter"></el-table-column>
       <el-table-column
-        fixed="right"
         align="center"
         label="Ações"
         width="150">

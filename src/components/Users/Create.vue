@@ -16,13 +16,13 @@
     <el-card class="box-card">
       <el-form label-position="top" :model="form">
         <el-form-item label="Nome">
-          <el-input v-model="form.name"></el-input>
+          <el-input v-model="form.name" type="text"></el-input>
         </el-form-item>
         <el-form-item label="E-mail">
-          <el-input v-model="form.email"></el-input>
+          <el-input v-model="form.email" type="email"></el-input>
         </el-form-item>
         <el-form-item label="Senha">
-          <el-input v-model="form.password"></el-input>
+          <el-input v-model="form.password" type="password"></el-input>
         </el-form-item>
         <el-button type="success" @click="save">Salvar</el-button>
       </el-form>
@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     save () {
-      console.log('Implementar...')
+      this.$router.push({ name: 'users.index' })
     }
   }
 }

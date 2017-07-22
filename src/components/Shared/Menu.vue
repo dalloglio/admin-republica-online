@@ -7,7 +7,7 @@
         <el-menu-item index="2" :route="{ name: 'users.index' }"><i class="fa fa-fw fa-picture-o"></i>Banners</el-menu-item>
         <el-menu-item index="3" :route="{ name: 'categories.index' }"><i class="fa fa-fw fa-share-alt"></i>Categorias</el-menu-item>
         <el-menu-item index="4" :route="{ name: 'users.index' }"><i class="fa fa-fw fa-list-ul"></i>Filtros</el-menu-item>
-        <el-menu-item index="5" :route="{ name: 'users.index' }"><i class="fa fa-fw fa-briefcase"></i>Parceiros</el-menu-item>
+        <el-menu-item index="5" :route="{ name: 'partners.index' }"><i class="fa fa-fw fa-briefcase"></i>Parceiros</el-menu-item>
         <el-menu-item index="6" :route="{ name: 'users.index' }"><i class="fa fa-fw fa-users"></i>Usuários</el-menu-item>
       </el-menu-item-group>
       <el-menu-item-group title="Formulários">

@@ -100,7 +100,8 @@ a:focus {
 .el-picker-panel.el-date-picker {
   max-width: 200px !important;
 }
-.el-date-editor.el-input {
+.el-date-editor.el-input,
+.el-select {
   width: 100%;
 }
 

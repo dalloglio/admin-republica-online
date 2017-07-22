@@ -2,6 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 
+// Banners
+import BannerIndex from '@/components/Banners/Index'
+import BannerCreate from '@/components/Banners/Create'
+import BannerEdit from '@/components/Banners/Edit'
+
 // Categories
 import CategoryIndex from '@/components/Categories/Index'
 import CategoryCreate from '@/components/Categories/Create'
@@ -22,6 +27,11 @@ Vue.use(Router)
 export default new Router({
   routes: [
     { path: '/', name: 'home', component: Home },
+
+    // Banners
+    { path: '/banners', name: 'banners.index', component: BannerIndex },
+    { path: '/banners/create', name: 'banners.create', component: BannerCreate },
+    { path: '/banners/:id/edit', name: 'banners.edit', component: BannerEdit },
 
     // Categories
     { path: '/categories', name: 'categories.index', component: CategoryIndex },

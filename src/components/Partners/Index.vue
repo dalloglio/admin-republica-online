@@ -16,8 +16,7 @@
       <el-table-column prop="title" label="Título" sortable></el-table-column>
       <el-table-column prop="link" label="Link" sortable>
         <template scope="scope">
-          <el-icon name="link"></el-icon>
-          <a :href="scope.row.link" target="_blank">{{ scope.row.link }}</a>
+          <a v-if="scope.row.link" :href="scope.row.link" target="_blank">Visitar o link</a>
         </template>
       </el-table-column>
       <el-table-column prop="created_at" label="Data de criação" sortable :formatter="datetimeToBr"></el-table-column>

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import Vue from 'vue'
 
 const ENDPOINT = 'users'
 
@@ -9,38 +9,38 @@ export default {
   },
 
   mutations: {
-    setUsers: (state, data) => {
+    setUsers (state, data) {
       state.users = data
     },
 
-    setUser: (state, data) => {
+    setUser (state, data) {
       state.user = data
     }
   },
 
   actions: {
     getUsers ({ commit }) {
-      return axios.get(ENDPOINT).then((response) => {
+      Vue.http.get(ENDPOINT).then((response) => {
         commit('setUsers', response.body)
       })
     },
 
     getUser ({ commit }, id) {
-      return axios.get(ENDPOINT + '/' + id).then((response) => {
+      Vue.http.get(ENDPOINT + '/' + id).then((response) => {
         commit('setUser', response.body)
       })
     },
 
     createUser ({ commit }, data) {
-      return axios.post(ENDPOINT, data)
+      Vue.http.post(ENDPOINT, data)
     },
 
     updateUser ({ commit }, params) {
-      return axios.put(ENDPOINT + '/' + params.id, params.data)
+      Vue.http.put(ENDPOINT + '/' + params.id, params.data)
     },
 
     deleteUser ({ commit }, id) {
-      return axios.delete(ENDPOINT + '/' + id)
+      Vue.http.delete(ENDPOINT + '/' + id)
     }
   }
 }

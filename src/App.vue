@@ -31,7 +31,6 @@ html {
 body {
   margin: 0px;
   padding: 0px;
-  height: 100%;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   color: #333;
   background-color: #fff;
@@ -42,7 +41,6 @@ body {
 #app {
   position: relative;
   width: 100%;
-  height: 100%;
 }
 #app > header {
   position: relative;
@@ -64,7 +62,6 @@ body {
   margin-left: 200px;
   padding: 15px;
   width: calc(100% - 230px);
-  height: calc(100% - 90px);
   z-index: 1;
 }
 #app > main .el-breadcrumb {

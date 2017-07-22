@@ -14,15 +14,16 @@
 
     <el-table :data="users" empty-text="Não há registros..." :default-sort="{ prop: 'name', order: 'ascending' }" border stripe fit>
       <el-table-column prop="name" label="Nome" sortable></el-table-column>
-      <el-table-column prop="email" label="E-mail" :formatter="formatter"></el-table-column>
+      <el-table-column prop="email" label="E-mail" sortable></el-table-column>
+      <el-table-column prop="created_at" label="Data de criação" sortable></el-table-column>
       <el-table-column
         align="center"
         label="Ações"
         width="150">
         <template scope="scope">
           <el-button-group>
-            <el-button type="info" size="small" @click="url.go({ name: 'users.edit', params: { id: 1 } })">Editar</el-button>
-            <el-button type="danger" size="small" @click.native.prevent="deleteRow(scope.$index, users)">Excluir</el-button>
+            <el-button type="info" size="small" @click="url.go({ name: 'users.edit', params: { id: scope.row.id } })">Editar</el-button>
+            <el-button type="danger" size="small" @click.native.prevent="deleteUser(scope.row.id)">Excluir</el-button>
           </el-button-group>
         </template>
       </el-table-column>
@@ -35,19 +36,22 @@
 export default {
   name: 'users-index',
   methods: {
-    deleteRow (index, rows) {
-      rows.splice(index, 1)
-    },
-    formatter (row, column) {
-      return row.name + ': ' + row.email
+    deleteUser (id) {
+      if (!confirm('Você tem certeza que deseja excluir este registro?')) {
+        return
+      }
+      this.$store.dispatch('deleteUser', id).then((response) => {
+        console.log(response)
+      })
     }
   },
   computed: {
     users () {
-      return this.$store.dispatch('getUsers').then((response) => {
-        console.log(response)
-      })
+      return this.$store.state.user.users.data
     }
+  },
+  created () {
+    this.$store.dispatch('getUsers')
   }
 }
 </script>

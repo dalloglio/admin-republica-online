@@ -42,7 +42,13 @@ export default {
     },
 
     createUser ({ commit }, data) {
-      Vue.http.post(ENDPOINT, data)
+      return new Promise((resolve, reject) => {
+        Vue.http.post(ENDPOINT, data).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
     },
 
     updateUser ({ commit }, params) {

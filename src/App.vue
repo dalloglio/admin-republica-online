@@ -71,6 +71,7 @@ body {
   padding: 5px;
 }
 
+/*HELPERS*/
 .clearfix:before,
 .clearfix:after {
   display: table;
@@ -84,5 +85,13 @@ body {
 }
 .left {
   float: left;
+}
+
+/*FORM*/
+.el-picker-panel.el-date-picker {
+  max-width: 200px !important;
+}
+.el-date-editor.el-input {
+  width: 100%;
 }
 </style>

@@ -38,6 +38,15 @@ body {
   position: relative;
   z-index: 1;
 }
+a {
+  color: #20a0ff;
+  text-decoration: none;
+}
+a:hover,
+a:focus {
+  color: #4db3ff;
+  text-decoration: underline;
+}
 #app {
   position: relative;
   width: 100%;

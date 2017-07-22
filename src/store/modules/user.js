@@ -8,6 +8,16 @@ export default {
     user: {}
   },
 
+  getters: {
+    getUserById: (state, getters) => (id) => {
+      if (state.users.data) {
+        return state.users.data.find(user => user.id === id)
+      } else {
+        return {}
+      }
+    }
+  },
+
   mutations: {
     setUsers (state, data) {
       state.users = data
@@ -40,7 +50,13 @@ export default {
     },
 
     deleteUser ({ commit }, id) {
-      Vue.http.delete(ENDPOINT + '/' + id)
+      return new Promise((resolve, reject) => {
+        Vue.http.delete(ENDPOINT + '/' + id).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
     }
   }
 }

@@ -37,12 +37,19 @@ export default {
   name: 'users-index',
   methods: {
     deleteUser (id) {
-      if (!confirm('Você tem certeza que deseja excluir este registro?')) {
+      if (!Number.isInteger(id) || !confirm('Você tem certeza que deseja excluir este registro?')) {
         return
       }
-      this.$store.dispatch('deleteUser', id).then((response) => {
-        console.log(response)
-      })
+      let user = this.$store.getters.getUserById(id)
+      if (Number.isInteger(user.id)) {
+        this.$store.dispatch('deleteUser', user.id).then((response) => {
+          if (response.ok) {
+            this.$store.dispatch('getUsers')
+          }
+        }, (error) => {
+          console.log(error)
+        })
+      }
     }
   },
   computed: {

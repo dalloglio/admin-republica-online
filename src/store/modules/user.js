@@ -52,7 +52,13 @@ export default {
     },
 
     updateUser ({ commit }, params) {
-      Vue.http.put(ENDPOINT + '/' + params.id, params.data)
+      return new Promise((resolve, reject) => {
+        Vue.http.put(ENDPOINT + '/' + params.id, params.data).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
     },
 
     deleteUser ({ commit }, id) {

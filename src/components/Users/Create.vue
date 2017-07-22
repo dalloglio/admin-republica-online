@@ -43,7 +43,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="Ativo">
-          <el-switch v-model="form.status" on-color="#13ce66" off-color="#ff4949" on-value="1" off-value="0" on-text="Sim" off-text="Não"></el-switch>
+          <el-switch v-model="form.status" on-color="#13ce66" off-color="#ff4949" :on-value="true" :off-value="false" on-text="Sim" off-text="Não"></el-switch>
         </el-form-item>
         <el-button type="success" @click="save">Salvar</el-button>
       </el-form>
@@ -84,12 +84,6 @@ export default {
         })
       })
     }
-  },
-  created () {
-    this.date.locale()
   }
 }
 </script>
-
-<style>
-</style>

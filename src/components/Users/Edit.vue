@@ -14,15 +14,36 @@
     </h1>
 
     <el-card class="box-card">
+
+      <el-alert :closable="false" title="Atenção" description="Todos os campos devem ser preenchidos." type="warning" show-icon></el-alert>
+
       <el-form label-position="top" :model="form">
+        <el-form-item label="Nome completo">
+          <el-input v-model="form.name" type="text" placeholder="Informe o nome completo" :minlength="3" :maxlength="255"></el-input>
+        </el-form-item>
         <el-form-item label="Nome">
-          <el-input v-model="form.name" type="text"></el-input>
+          <el-input v-model="form.first_name" type="text" placeholder="Informe o nome" :minlength="3" :maxlength="255"></el-input>
+        </el-form-item>
+        <el-form-item label="Sobrenome">
+          <el-input v-model="form.last_name" type="text" placeholder="Informe o sobrenome" :minlength="3" :maxlength="255"></el-input>
+        </el-form-item>
+        <el-form-item label="Aniversário">
+          <el-date-picker v-model="form.birthday" type="date" placeholder="Informe a data de nascimento" format="dd/MM/yyyy"></el-date-picker>
         </el-form-item>
         <el-form-item label="E-mail">
-          <el-input v-model="form.email" type="email"></el-input>
+          <el-input v-model="form.email" type="email" placeholder="Informe o e-mail" :minlength="3" :maxlength="255"></el-input>
         </el-form-item>
         <el-form-item label="Senha">
-          <el-input v-model="form.password" type="password"></el-input>
+          <el-input v-model="form.password" type="password" placeholder="Informe a senha" :minlength="6" :maxlength="20"></el-input>
+        </el-form-item>
+        <el-form-item label="Sexo">
+          <el-radio-group v-model="form.gender">
+            <el-radio-button label="Male">Masculino</el-radio-button>
+            <el-radio-button label="Female">Feminino</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="Ativo">
+          <el-switch v-model="form.status" on-color="#13ce66" off-color="#ff4949" :on-value="true" :off-value="false" on-text="Sim" off-text="Não"></el-switch>
         </el-form-item>
         <el-button type="success" @click="save">Salvar</el-button>
       </el-form>
@@ -33,22 +54,34 @@
 <script>
 export default {
   'name': 'users-edit',
-  data () {
-    return {
-      form: {
-        name: 'Ricardo Pires',
-        email: 'ricardo@email.com',
-        password: '123456'
-      }
-    }
-  },
   methods: {
     save () {
-      this.$router.push({ name: 'users.index' })
+      this.form.birthday = this.date.toDate(this.form.birthday)
+      let params = {
+        id: this.$route.params.id,
+        data: this.form
+      }
+      this.$store.dispatch('updateUser', params).then((response) => {
+        if (response.ok) {
+          this.$router.push({ name: 'users.index' })
+        }
+      }, (error) => {
+        console.log(error)
+        this.$message({
+          showClose: true,
+          message: 'Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.',
+          type: 'error'
+        })
+      })
     }
+  },
+  computed: {
+    form () {
+      return this.$store.state.user.user
+    }
+  },
+  created () {
+    this.$store.dispatch('getUser', this.$route.params.id)
   }
 }
 </script>
-
-<style>
-</style>

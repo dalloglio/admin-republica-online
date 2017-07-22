@@ -94,4 +94,9 @@ body {
 .el-date-editor.el-input {
   width: 100%;
 }
+
+/*ALERT*/
+.el-alert {
+  margin-bottom: 20px;
+}
 </style>

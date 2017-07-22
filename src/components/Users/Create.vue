@@ -14,8 +14,11 @@
     </h1>
 
     <el-card class="box-card">
+
+      <el-alert :closable="false" title="Atenção" description="Todos os campos devem ser preenchidos." type="warning" show-icon></el-alert>
+
       <el-form label-position="top" :model="form">
-        <el-form-item label="Nome">
+        <el-form-item label="Nome completo">
           <el-input v-model="form.name" type="text" placeholder="Informe o nome completo" :minlength="3" :maxlength="255"></el-input>
         </el-form-item>
         <el-form-item label="Nome">
@@ -74,6 +77,11 @@ export default {
         }
       }, (error) => {
         console.log(error)
+        this.$message({
+          showClose: true,
+          message: 'Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.',
+          type: 'error'
+        })
       })
     }
   },

@@ -15,6 +15,7 @@
     <el-table :data="users" empty-text="Não há registros..." :default-sort="{ prop: 'name', order: 'ascending' }" border stripe fit>
       <el-table-column prop="name" label="Nome" sortable></el-table-column>
       <el-table-column prop="email" label="E-mail" sortable></el-table-column>
+      <el-table-column prop="status" label="Ativo" sortable :formatter="status"></el-table-column>
       <el-table-column prop="created_at" label="Data de criação" sortable :formatter="datetimeToBr"></el-table-column>
       <el-table-column
         align="center"
@@ -36,8 +37,14 @@
 export default {
   name: 'users-index',
   methods: {
-    datetimeToBr (row, column, value) {
-      return this.date.toDateTimeBr(value)
+    status (row, column, status) {
+      if (status) {
+        return 'Sim'
+      }
+      return 'Não'
+    },
+    datetimeToBr (row, column, date) {
+      return this.date.toDateTimeBr(date)
     },
     deleteUser (id) {
       if (!Number.isInteger(id) || !confirm('Você tem certeza que deseja excluir este registro?')) {

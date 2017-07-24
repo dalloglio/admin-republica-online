@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <header>
+    <header v-if="this.$auth.isAuthenticated()">
       <app-navbar></app-navbar>
     </header>
-    <aside>
+    <aside v-if="this.$auth.isAuthenticated()">
       <app-menu></app-menu>
     </aside>
     <main>

@@ -1,6 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
+// Home
 import Home from '@/components/Home'
+
+// Auth
+import AuthLogin from '@/components/Auth/Login'
+import AuthLogout from '@/components/Auth/Logout'
 
 // Banners
 import BannerIndex from '@/components/Banners/Index'
@@ -24,28 +30,49 @@ import UserEdit from '@/components/Users/Edit'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
-    { path: '/', name: 'home', component: Home },
+    // Auth
+    { path: '/login', name: 'auth.login', component: AuthLogin, meta: { requiresAuth: false } },
+    { path: '/logout', name: 'auth.logout', component: AuthLogout, meta: { requiresAuth: true } },
+
+    // Home
+    { path: '/', name: 'home', component: Home, meta: { requiresAuth: true } },
 
     // Banners
-    { path: '/banners', name: 'banners.index', component: BannerIndex },
-    { path: '/banners/create', name: 'banners.create', component: BannerCreate },
-    { path: '/banners/:id/edit', name: 'banners.edit', component: BannerEdit },
+    { path: '/banners', name: 'banners.index', component: BannerIndex, meta: { requiresAuth: true } },
+    { path: '/banners/create', name: 'banners.create', component: BannerCreate, meta: { requiresAuth: true } },
+    { path: '/banners/:id/edit', name: 'banners.edit', component: BannerEdit, meta: { requiresAuth: true } },
 
     // Categories
-    { path: '/categories', name: 'categories.index', component: CategoryIndex },
-    { path: '/categories/create', name: 'categories.create', component: CategoryCreate },
-    { path: '/categories/:id/edit', name: 'categories.edit', component: CategoryEdit },
+    { path: '/categories', name: 'categories.index', component: CategoryIndex, meta: { requiresAuth: true } },
+    { path: '/categories/create', name: 'categories.create', component: CategoryCreate, meta: { requiresAuth: true } },
+    { path: '/categories/:id/edit', name: 'categories.edit', component: CategoryEdit, meta: { requiresAuth: true } },
 
     // Partners
-    { path: '/partners', name: 'partners.index', component: PartnerIndex },
-    { path: '/partners/create', name: 'partners.create', component: PartnerCreate },
-    { path: '/partners/:id/edit', name: 'partners.edit', component: PartnerEdit },
+    { path: '/partners', name: 'partners.index', component: PartnerIndex, meta: { requiresAuth: true } },
+    { path: '/partners/create', name: 'partners.create', component: PartnerCreate, meta: { requiresAuth: true } },
+    { path: '/partners/:id/edit', name: 'partners.edit', component: PartnerEdit, meta: { requiresAuth: true } },
 
     // Users
-    { path: '/users', name: 'users.index', component: UserIndex },
-    { path: '/users/create', name: 'users.create', component: UserCreate },
-    { path: '/users/:id/edit', name: 'users.edit', component: UserEdit }
+    { path: '/users', name: 'users.index', component: UserIndex, meta: { requiresAuth: true } },
+    { path: '/users/create', name: 'users.create', component: UserCreate, meta: { requiresAuth: true } },
+    { path: '/users/:id/edit', name: 'users.edit', component: UserEdit, meta: { requiresAuth: true } }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!Vue.auth.isAuthenticated()) {
+      next({
+        name: 'auth.login'
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
+
+export default router

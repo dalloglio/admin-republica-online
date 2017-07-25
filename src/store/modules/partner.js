@@ -5,7 +5,16 @@ const ENDPOINT = 'partners'
 export default {
   state: {
     partners: [],
-    partner: {}
+    partner: {
+      photo: {
+        id: null,
+        name: null,
+        photo: null,
+        size: null,
+        type: null,
+        url: null
+      }
+    }
   },
 
   getters: {
@@ -64,6 +73,16 @@ export default {
     deletePartner ({ commit }, id) {
       return new Promise((resolve, reject) => {
         Vue.http.delete(ENDPOINT + '/' + id).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
+    },
+
+    createPartnerPhoto ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        Vue.http.post(ENDPOINT + '/' + params.id + '/photos', params.data).then((response) => {
           resolve(response)
         }, (error) => {
           reject(error)

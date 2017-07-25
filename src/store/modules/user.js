@@ -69,6 +69,16 @@ export default {
           reject(error)
         })
       })
+    },
+
+    createUserPhoto ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        Vue.http.post(ENDPOINT + '/' + params.id + '/photos', params.data).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
     }
   }
 }

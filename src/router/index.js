@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+// Auth
+import AuthLogin from '@/components/Auth/Login'
+import AuthLogout from '@/components/Auth/Logout'
+
 // Home
 import Home from '@/components/Home'
 
@@ -8,10 +12,6 @@ import Home from '@/components/Home'
 import AdIndex from '@/components/Ads/Index'
 import AdCreate from '@/components/Ads/Create'
 import AdEdit from '@/components/Ads/Edit'
-
-// Auth
-import AuthLogin from '@/components/Auth/Login'
-import AuthLogout from '@/components/Auth/Logout'
 
 // Banners
 import BannerIndex from '@/components/Banners/Index'

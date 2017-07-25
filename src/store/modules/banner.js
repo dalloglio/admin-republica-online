@@ -5,7 +5,16 @@ const ENDPOINT = 'banners'
 export default {
   state: {
     banners: [],
-    banner: {}
+    banner: {
+      photo: {
+        id: null,
+        name: null,
+        photo: null,
+        size: null,
+        type: null,
+        url: null
+      }
+    }
   },
 
   getters: {
@@ -64,6 +73,16 @@ export default {
     deleteBanner ({ commit }, id) {
       return new Promise((resolve, reject) => {
         Vue.http.delete(ENDPOINT + '/' + id).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
+    },
+
+    createBannerPhoto ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        Vue.http.post(ENDPOINT + '/' + params.id + '/photos', params.data).then((response) => {
           resolve(response)
         }, (error) => {
           reject(error)

@@ -2,6 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 
+// Ads
+import AdIndex from '@/components/Ads/Index'
+import AdCreate from '@/components/Ads/Create'
+import AdEdit from '@/components/Ads/Edit'
+
 // Banners
 import BannerIndex from '@/components/Banners/Index'
 import BannerCreate from '@/components/Banners/Create'
@@ -11,6 +16,11 @@ import BannerEdit from '@/components/Banners/Edit'
 import CategoryIndex from '@/components/Categories/Index'
 import CategoryCreate from '@/components/Categories/Create'
 import CategoryEdit from '@/components/Categories/Edit'
+
+// Filters
+import FilterIndex from '@/components/Filters/Index'
+import FilterCreate from '@/components/Filters/Create'
+import FilterEdit from '@/components/Filters/Edit'
 
 // Partners
 import PartnerIndex from '@/components/Partners/Index'
@@ -28,6 +38,11 @@ export default new Router({
   routes: [
     { path: '/', name: 'home', component: Home },
 
+    // Ads
+    { path: '/ads', name: 'ads.index', component: AdIndex },
+    { path: '/ads/create', name: 'ads.create', component: AdCreate },
+    { path: '/ads/:id/edit', name: 'ads.edit', component: AdEdit },
+
     // Banners
     { path: '/banners', name: 'banners.index', component: BannerIndex },
     { path: '/banners/create', name: 'banners.create', component: BannerCreate },
@@ -37,6 +52,11 @@ export default new Router({
     { path: '/categories', name: 'categories.index', component: CategoryIndex },
     { path: '/categories/create', name: 'categories.create', component: CategoryCreate },
     { path: '/categories/:id/edit', name: 'categories.edit', component: CategoryEdit },
+
+    // Filters
+    { path: '/filters', name: 'filters.index', component: FilterIndex },
+    { path: '/filters/create', name: 'filters.create', component: FilterCreate },
+    { path: '/filters/:id/edit', name: 'filters.edit', component: FilterEdit },
 
     // Partners
     { path: '/partners', name: 'partners.index', component: PartnerIndex },

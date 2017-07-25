@@ -10,16 +10,20 @@ import router from './router'
 import { store } from './store'
 import UtilsUrl from './utils/url'
 import UtilsDate from './utils/date'
+import UtilsAuth from './utils/auth'
 
 Vue.use(VueResource)
 Vue.use(ElementUI, { locale })
 Vue.use(UtilsUrl)
 Vue.use(UtilsDate)
+Vue.use(UtilsAuth, { client_id: process.env.API_CLIENT_ID, client_secret: process.env.API_CLIENT_SECRET })
 
 Vue.http.options.root = process.env.API_URL
-// window.axios.defaults.baseURL = process.env.API_URL
-// window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-// window.axios.defaults.headers.common['Authorization'] = 'Bearer abcdefghijklmnopqrstuvwxyz0123456789'
+
+Vue.http.interceptors.push(function (request, next) {
+  request.headers.set('Authorization', 'Bearer ' + Vue.auth.getAccessToken())
+  next()
+})
 
 Vue.config.productionTip = false
 

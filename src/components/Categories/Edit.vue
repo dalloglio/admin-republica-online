@@ -23,7 +23,12 @@
         </el-form-item>
         <el-form-item label="Descrição">
           <el-input v-model="form.description" type="text" placeholder="Informe uma descrição" :minlength="3" :maxlength="255"></el-input>
-          </el-form-item>
+        </el-form-item>
+        <el-form-item label="Filtros">
+          <el-transfer filterable
+            :filter-method="filterMethod" filter-placeholder="Pesquisar filtro..." v-model="form.filters" :data="filters">
+          </el-transfer>
+        </el-form-item>
         <el-form-item label="Ativo">
           <el-switch v-model="form.status" on-color="#13ce66" off-color="#ff4949" :on-value="true" :off-value="false" on-text="Sim" off-text="Não"></el-switch>
         </el-form-item>
@@ -36,6 +41,13 @@
 <script>
 export default {
   'name': 'categories-edit',
+  data () {
+    return {
+      filterMethod (query, item) {
+        return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1
+      }
+    }
+  },
   methods: {
     save () {
       let params = {
@@ -59,6 +71,19 @@ export default {
   computed: {
     form () {
       return this.$store.state.category.category
+    },
+    filters () {
+      let data = []
+      let filters = this.$store.state.filter.filters.data
+      if (filters !== undefined) {
+        filters.forEach((filter) => {
+          data.push({
+            key: filter.id,
+            label: filter.title
+          })
+        })
+      }
+      return data
     }
   },
   created () {

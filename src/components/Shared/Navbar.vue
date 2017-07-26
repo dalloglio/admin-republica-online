@@ -1,11 +1,11 @@
 <template lang="html">
   <div class="navbar">
-    <el-menu theme="dark" mode="horizontal">
+    <el-menu theme="dark" mode="horizontal" :router="true">
       <el-menu-item index="0">
         <i class="fa fa-fw fa-bars"></i>
       </el-menu-item>
 
-      <el-menu-item index="1" class="logout">
+      <el-menu-item index="1" class="logout" :route="{ name: 'auth.logout' }">
         <i class="fa fa-fw fa-sign-out"></i>
       </el-menu-item>
     </el-menu>

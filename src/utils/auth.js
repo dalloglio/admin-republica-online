@@ -9,22 +9,34 @@ export default {
   install (Vue, options) {
     Vue.auth = {
       login (user) {
-        Vue.http.post(OAUTH_TOKEN_URI, {
-          grant_type: 'password',
-          client_id: options.client_id,
-          client_secret: options.client_secret,
-          username: user.username,
-          password: user.password,
-          scope: ''
-        })
-        .then((response) => {
-          this.setToken(response.body)
-
-          if (this.isAuthenticated()) {
-            router.push({ name: LOGIN_REDIRECT })
-          } else {
-            console.log('Não foi possível fazer login.')
-          }
+        return new Promise((resolve, reject) => {
+          Vue.http.post(OAUTH_TOKEN_URI, {
+            grant_type: 'password',
+            client_id: options.client_id,
+            client_secret: options.client_secret,
+            username: user.username,
+            password: user.password,
+            scope: ''
+          }).then((response) => {
+            this.setToken(response.body)
+            if (this.isAuthenticated()) {
+              resolve({
+                status: true,
+                redirect: LOGIN_REDIRECT
+              })
+            } else {
+              reject({
+                status: false,
+                message: 'Você não esta autenticado.'
+              })
+            }
+          }, (error) => {
+            reject({
+              status: false,
+              error: error.body.error,
+              message: error.body.message
+            })
+          })
         })
       },
 

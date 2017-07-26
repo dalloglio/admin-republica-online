@@ -47,9 +47,9 @@ const router = new Router({
     { path: '/logout', name: 'auth.logout', component: AuthLogout, meta: { requiresAuth: true } },
 
     // Ads
-    { path: '/ads', name: 'ads.index', component: AdIndex },
-    { path: '/ads/create', name: 'ads.create', component: AdCreate },
-    { path: '/ads/:id/edit', name: 'ads.edit', component: AdEdit },
+    { path: '/ads', name: 'ads.index', component: AdIndex, meta: { requiresAuth: true } },
+    { path: '/ads/create', name: 'ads.create', component: AdCreate, meta: { requiresAuth: true } },
+    { path: '/ads/:id/edit', name: 'ads.edit', component: AdEdit, meta: { requiresAuth: true } },
 
     // Home
     { path: '/', name: 'home', component: Home, meta: { requiresAuth: true } },
@@ -65,9 +65,9 @@ const router = new Router({
     { path: '/categories/:id/edit', name: 'categories.edit', component: CategoryEdit, meta: { requiresAuth: true } },
 
     // Filters
-    { path: '/filters', name: 'filters.index', component: FilterIndex },
-    { path: '/filters/create', name: 'filters.create', component: FilterCreate },
-    { path: '/filters/:id/edit', name: 'filters.edit', component: FilterEdit },
+    { path: '/filters', name: 'filters.index', component: FilterIndex, meta: { requiresAuth: true } },
+    { path: '/filters/create', name: 'filters.create', component: FilterCreate, meta: { requiresAuth: true } },
+    { path: '/filters/:id/edit', name: 'filters.edit', component: FilterEdit, meta: { requiresAuth: true } },
 
     // Partners
     { path: '/partners', name: 'partners.index', component: PartnerIndex, meta: { requiresAuth: true } },

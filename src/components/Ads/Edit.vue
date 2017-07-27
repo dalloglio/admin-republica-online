@@ -43,6 +43,17 @@
         <el-form-item label="Ativo">
           <el-switch v-model="form.status" on-color="#13ce66" off-color="#ff4949" :on-value="true" :off-value="false" on-text="Sim" off-text="Não"></el-switch>
         </el-form-item>
+
+        <h2>Contatos</h2>
+        <el-form-item label="Nome">
+          <el-input v-model="form.contact.name" type="text" placeholder="Informe o nome" :minlength="3" :maxlength="255"></el-input>
+        </el-form-item>
+        <el-form-item label="Celular">
+          <el-input v-model="form.contact.cellphone" type="text" placeholder="Informe o celular" :minlength="11" :maxlength="15"></el-input>
+        </el-form-item>
+        <el-form-item label="WhatsApp">
+          <el-input v-model="form.contact.whatsapp" type="text" placeholder="Informe o whatsapp" :minlength="11" :maxlength="15"></el-input>
+        </el-form-item>
         <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
       </el-form>
     </el-card>

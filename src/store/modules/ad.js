@@ -5,7 +5,10 @@ const ENDPOINT = 'ads'
 export default {
   state: {
     ads: [],
-    ad: {}
+    ad: {
+      contact: {},
+      user: {}
+    }
   },
 
   getters: {

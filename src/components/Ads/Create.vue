@@ -35,7 +35,7 @@
           <el-input v-model="form.description" type="text" placeholder="Informe uma descrição" :minlength="3" :maxlength="255"></el-input>
           </el-form-item>
         <el-form-item label="Texto">
-          <el-input v-model="form.content" type="text" placeholder="Informe o texto" :minlength="3" :maxlength="255"></el-input>
+          <el-input v-model="form.content" type="textarea" placeholder="Informe o texto" :minlength="0" :maxlength="5000" :rows="4"></el-input>
           </el-form-item>
         <el-form-item label="Preço">
           <el-input v-model="form.price" type="text" placeholder="Informe o preço." :minlength="3" :maxlength="10"></el-input>
@@ -43,6 +43,18 @@
         <el-form-item label="Ativo">
           <el-switch v-model="form.status" on-color="#13ce66" off-color="#ff4949" :on-value="true" :off-value="false" on-text="Sim" off-text="Não"></el-switch>
         </el-form-item>
+
+        <h2>Contatos</h2>
+        <el-form-item label="Nome">
+          <el-input v-model="form.contact.name" type="text" placeholder="Informe o nome" :minlength="3" :maxlength="255"></el-input>
+        </el-form-item>
+        <el-form-item label="Celular">
+          <el-input v-model="form.contact.cellphone" type="text" placeholder="Informe o celular" :minlength="11" :maxlength="15"></el-input>
+        </el-form-item>
+        <el-form-item label="WhatsApp">
+          <el-input v-model="form.contact.whatsapp" type="text" placeholder="Informe o whatsapp" :minlength="11" :maxlength="15"></el-input>
+        </el-form-item>
+
         <el-button type="success" @click="save">Salvar</el-button>
       </el-form>
     </el-card>
@@ -63,7 +75,12 @@ export default {
         price: '',
         status: '',
         category_id: '',
-        user_id: ''
+        user_id: '',
+        contact: {
+          name: '',
+          cellphone: '',
+          whatsapp: ''
+        }
       }
     }
   },
@@ -114,3 +131,11 @@ export default {
   }
 }
 </script>
+
+<style>
+  fieldset {
+    border: 0 none;
+    padding: 0;
+    margin: 0 auto;
+  }
+</style>

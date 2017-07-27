@@ -6,6 +6,7 @@ export default {
   state: {
     ads: [],
     ad: {
+      address: {},
       contact: {},
       user: {}
     }

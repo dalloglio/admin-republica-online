@@ -35,13 +35,36 @@
           <el-input v-model="form.description" type="text" placeholder="Informe uma descrição" :minlength="3" :maxlength="255"></el-input>
           </el-form-item>
         <el-form-item label="Texto">
-          <el-input v-model="form.content" type="text" placeholder="Informe o texto" :minlength="3" :maxlength="255"></el-input>
+          <el-input v-model="form.content" type="textarea" placeholder="Informe o texto" :minlength="0" :maxlength="5000" :rows="4"></el-input>
           </el-form-item>
         <el-form-item label="Preço">
           <el-input v-model="form.price" type="text" placeholder="Informe o preço." :minlength="3" :maxlength="10"></el-input>
           </el-form-item>
         <el-form-item label="Ativo">
           <el-switch v-model="form.status" on-color="#13ce66" off-color="#ff4949" :on-value="true" :off-value="false" on-text="Sim" off-text="Não"></el-switch>
+        </el-form-item>
+
+        <h2>Endereço</h2>
+        <el-form-item label="Cep">
+          <el-input v-model="form.address.zip_code" type="text" placeholder="Informe o cep" :minlength="8" :maxlength="9"></el-input>
+        </el-form-item>
+        <el-form-item label="Estado">
+          <el-input v-model="form.address.state" type="text" placeholder="Informe o estado" :minlength="3" :maxlength="255"></el-input>
+        </el-form-item>
+        <el-form-item label="Cidade">
+          <el-input v-model="form.address.city" type="text" placeholder="Informe a cidade" :minlength="3" :maxlength="255"></el-input>
+        </el-form-item>
+        <el-form-item label="Bairro">
+          <el-input v-model="form.address.neighborhood" type="text" placeholder="Informe o bairro" :minlength="3" :maxlength="255"></el-input>
+        </el-form-item>
+        <el-form-item label="Rua">
+          <el-input v-model="form.address.street" type="text" placeholder="Informe a rua" :minlength="3" :maxlength="255"></el-input>
+        </el-form-item>
+        <el-form-item label="Número">
+          <el-input v-model="form.address.number" type="text" placeholder="Informe o número" :minlength="3" :maxlength="20"></el-input>
+        </el-form-item>
+        <el-form-item label="Complemento">
+          <el-input v-model="form.address.sub_address" type="text" placeholder="Informe o complemento" :minlength="3" :maxlength="255"></el-input>
         </el-form-item>
 
         <h2>Contatos</h2>

@@ -36,8 +36,13 @@ export default {
     },
 
     getAd ({ commit }, id) {
-      Vue.http.get(ENDPOINT + '/' + id).then((response) => {
-        commit('setAd', response.body)
+      return new Promise((resolve, reject) => {
+        Vue.http.get(ENDPOINT + '/' + id).then((response) => {
+          commit('setAd', response.body)
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
       })
     },
 

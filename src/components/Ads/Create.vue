@@ -19,7 +19,7 @@
 
       <el-form label-position="top" :model="form">
         <el-form-item label="Usuário">
-          <el-select v-model="form.user_id" filterable remote placeholder="Escolha um usuário" :remote-method="remoteUsers" :loading="loading">
+          <el-select v-model="form.user_id" filterable remote placeholder="Digite algo para buscar um usuário" :remote-method="remoteUsers" :loading="loading">
             <el-option v-for="user in users" :key="user.id" :label="user.name" :value="user.id"></el-option>
           </el-select>
         </el-form-item>
@@ -89,7 +89,8 @@ export default {
           this.loading = false
           if (response.body.data) {
             this.users = response.body.data.filter(user => {
-              return user.name.toLowerCase().indexOf(query.toLowerCase()) > -1
+              let q = query.toString()
+              return user.name.toLowerCase().indexOf(q.toLowerCase()) > -1
             })
           }
         })

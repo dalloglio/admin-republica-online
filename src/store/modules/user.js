@@ -30,8 +30,13 @@ export default {
 
   actions: {
     getUsers ({ commit }) {
-      Vue.http.get(ENDPOINT).then((response) => {
-        commit('setUsers', response.body)
+      return new Promise((resolve, reject) => {
+        Vue.http.get(ENDPOINT).then((response) => {
+          commit('setUsers', response.body)
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
       })
     },
 

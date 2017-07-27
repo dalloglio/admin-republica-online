@@ -18,6 +18,16 @@
       <el-alert :closable="false" title="Atenção" description="Todos os campos devem ser preenchidos." type="warning" show-icon></el-alert>
 
       <el-form label-position="top" :model="form">
+        <el-form-item label="Usuário">
+          <el-select v-model="form.user_id" filterable remote placeholder="Escolha um usuário" :remote-method="remoteUsers" :loading="loading">
+            <el-option v-for="user in users" :key="user.id" :label="user.name" :value="user.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Categoria">
+          <el-select v-model="form.category_id" placeholder="Escolha uma categoria">
+            <el-option v-for="category in categories" :key="category.id" :label="category.title" :value="category.id"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="Título">
           <el-input v-model="form.title" type="text" placeholder="Informe o título" :minlength="3" :maxlength="255"></el-input>
         </el-form-item>
@@ -44,12 +54,16 @@ export default {
   'name': 'ads-create',
   data () {
     return {
+      users: [],
+      loading: false,
       form: {
         title: '',
         description: '',
         content: '',
         price: '',
-        status: ''
+        status: '',
+        category_id: '',
+        user_id: ''
       }
     }
   },
@@ -67,7 +81,35 @@ export default {
           type: 'error'
         })
       })
+    },
+    remoteUsers (query) {
+      if (query !== '') {
+        this.loading = true
+        this.$store.dispatch('getUsers').then((response) => {
+          this.loading = false
+          if (response.body.data) {
+            this.users = response.body.data.filter(user => {
+              return user.name.toLowerCase().indexOf(query.toLowerCase()) > -1
+            })
+          }
+        })
+      } else {
+        this.users = []
+      }
     }
+  },
+  computed: {
+    categories () {
+      let categories = this.$store.state.category.categories
+      let data = []
+      if (categories.data) {
+        data = categories.data
+      }
+      return data
+    }
+  },
+  created () {
+    this.$store.dispatch('getCategories')
   }
 }
 </script>

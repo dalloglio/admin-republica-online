@@ -26,7 +26,7 @@
         </el-form-item>
         <el-form-item label="Filtros">
           <el-transfer filterable
-            :filter-method="filterMethod" filter-placeholder="Pesquisar filtro..." v-model="form.filters" :data="filters">
+            :filter-method="filterMethod" filter-placeholder="Pesquisar filtro..." v-model="filtersSelected" :data="filters">
           </el-transfer>
         </el-form-item>
         <el-form-item label="Ativo">
@@ -43,6 +43,7 @@ export default {
   'name': 'categories-edit',
   data () {
     return {
+      filtersSelected: [],
       filterMethod (query, item) {
         return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1
       }
@@ -50,6 +51,7 @@ export default {
   },
   methods: {
     save () {
+      this.form.filters = this.filtersSelected
       let params = {
         id: this.$route.params.id,
         data: this.form
@@ -87,7 +89,17 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('getCategory', this.$route.params.id)
+    this.$store.dispatch('getCategory', this.$route.params.id).then((response) => {
+      let filters = response.body.filters
+      if (filters) {
+        filters.forEach((filter) => {
+          if (filter.id) {
+            this.filtersSelected.push(filter.id)
+          }
+        })
+      }
+    })
+    this.$store.dispatch('getFilters')
   }
 }
 </script>

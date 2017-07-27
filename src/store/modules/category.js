@@ -5,7 +5,9 @@ const ENDPOINT = 'categories'
 export default {
   state: {
     categories: [],
-    category: {}
+    category: {
+      filters: null
+    }
   },
 
   getters: {
@@ -36,8 +38,13 @@ export default {
     },
 
     getCategory ({ commit }, id) {
-      Vue.http.get(ENDPOINT + '/' + id).then((response) => {
-        commit('setCategory', response.body)
+      return new Promise((resolve, reject) => {
+        Vue.http.get(ENDPOINT + '/' + id).then((response) => {
+          commit('setCategory', response.body)
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
       })
     },
 

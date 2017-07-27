@@ -30,8 +30,13 @@ export default {
 
   actions: {
     getFilters ({ commit }) {
-      Vue.http.get(ENDPOINT).then((response) => {
-        commit('setFilters', response.body)
+      return new Promise((resolve, reject) => {
+        Vue.http.get(ENDPOINT).then((response) => {
+          commit('setFilters', response.body)
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
       })
     },
 

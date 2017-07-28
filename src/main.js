@@ -8,15 +8,17 @@ import 'font-awesome/css/font-awesome.css'
 import App from './App'
 import router from './router'
 import { store } from './store'
-import UtilsUrl from './utils/url'
-import UtilsDate from './utils/date'
 import UtilsAuth from './utils/auth'
+import UtilsCep from './utils/cep'
+import UtilsDate from './utils/date'
+import UtilsUrl from './utils/url'
 
 Vue.use(VueResource)
 Vue.use(ElementUI, { locale })
-Vue.use(UtilsUrl)
-Vue.use(UtilsDate)
 Vue.use(UtilsAuth, { client_id: process.env.API_CLIENT_ID, client_secret: process.env.API_CLIENT_SECRET })
+Vue.use(UtilsCep)
+Vue.use(UtilsDate)
+Vue.use(UtilsUrl)
 
 Vue.http.options.root = process.env.API_URL
 

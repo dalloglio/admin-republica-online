@@ -66,6 +66,13 @@
         <el-form-item label="Complemento">
           <el-input v-model="form.address.sub_address" type="text" placeholder="Informe o complemento" :minlength="3" :maxlength="255"></el-input>
         </el-form-item>
+        <el-form-item label="No mapa">
+          <el-radio-group v-model="form.address.show_on_map">
+            <el-radio label="0">Não mostrar</el-radio>
+            <el-radio label="1">Mostrar a localização aproximada</el-radio>
+            <el-radio label="2">Mostrar a localização exata</el-radio>
+          </el-radio-group>
+        </el-form-item>
 
         <h2>Contatos</h2>
         <el-form-item label="Nome">
@@ -112,7 +119,8 @@ export default {
           neighborhood: '',
           country: 'Brasil',
           state: '',
-          city: ''
+          city: '',
+          show_on_map: '0'
         }
       }
     }

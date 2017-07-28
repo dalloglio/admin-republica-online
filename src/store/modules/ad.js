@@ -42,7 +42,17 @@ export default {
     getAd ({ commit }, id) {
       return new Promise((resolve, reject) => {
         Vue.http.get(ENDPOINT + '/' + id).then((response) => {
-          commit('setAd', response.body)
+          let ad = response.body
+          if (!ad.address) {
+            ad.address = {}
+          }
+          if (!ad.contact) {
+            ad.contact = {}
+          }
+          if (!ad.user) {
+            ad.user = {}
+          }
+          commit('setAd', ad)
           resolve(response)
         }, (error) => {
           reject(error)

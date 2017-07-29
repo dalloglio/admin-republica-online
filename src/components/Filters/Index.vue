@@ -14,6 +14,7 @@
 
     <el-table :data="filters" empty-text="Não há registros..." :default-sort="{ prop: 'title', order: 'ascending' }" border stripe fit>
       <el-table-column prop="title" label="Título" sortable></el-table-column>
+      <el-table-column prop="description" label="Descrição" sortable></el-table-column>
       <el-table-column prop="type" label="Tipo" sortable></el-table-column>
       <el-table-column prop="created_at" label="Data de criação" sortable :formatter="datetimeToBr"></el-table-column>
       <el-table-column

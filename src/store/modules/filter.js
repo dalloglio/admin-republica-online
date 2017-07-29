@@ -5,7 +5,9 @@ const ENDPOINT = process.env.API_VERSION + '/filters'
 export default {
   state: {
     filters: [],
-    filter: {}
+    filter: {
+      values: []
+    }
   },
 
   getters: {
@@ -42,7 +44,17 @@ export default {
 
     getFilter ({ commit }, id) {
       Vue.http.get(ENDPOINT + '/' + id).then((response) => {
-        commit('setFilter', response.body)
+        let filter = response.body
+        let values = []
+        if (filter.values) {
+          for (let index in filter.values) {
+            values.push(filter.values[index])
+          }
+          filter.values = values
+        } else {
+          filter.values = []
+        }
+        commit('setFilter', filter)
       })
     },
 

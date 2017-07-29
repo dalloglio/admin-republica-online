@@ -26,7 +26,12 @@
           </el-form-item>
         <el-form-item label="Tipo">
           <el-select v-model="form.type" placeholder="Escolha o tipo">
-            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Valores">
+          <el-select v-model="form.values" multiple filterable allow-create placeholder="Adicione os valores do filtro">
+            <el-option v-for="item in values" :key="item" :label="item" :value="item"></el-option>
           </el-select>
         </el-form-item>
         <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
@@ -44,24 +49,13 @@ export default {
       form: {
         title: '',
         description: '',
-        type: '',
-        values: ''
+        type: 'select',
+        values: []
       },
-      options: [{
-        value: 'checkbox',
-        label: 'Checkbox'
-      }, {
-        value: 'number',
-        label: 'Number'
-      }, {
-        value: 'radio',
-        label: 'Radio'
-      }, {
+      values: [],
+      types: [{
         value: 'select',
         label: 'Select'
-      }, {
-        value: 'price',
-        label: 'Preço'
       }]
     }
   },

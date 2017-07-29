@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-const ENDPOINT = 'ads'
+const ENDPOINT = process.env.API_VERSION + '/ads'
 
 export default {
   state: {

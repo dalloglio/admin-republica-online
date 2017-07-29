@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-const ENDPOINT = 'filters'
+const ENDPOINT = process.env.API_VERSION + '/filters'
 
 export default {
   state: {

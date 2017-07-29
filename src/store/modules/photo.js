@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-const ENDPOINT = 'photos'
+const ENDPOINT = process.env.API_VERSION + '/photos'
 
 export default {
   getters: {

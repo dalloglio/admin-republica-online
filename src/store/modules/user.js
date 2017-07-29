@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-const ENDPOINT = 'users'
+const ENDPOINT = process.env.API_VERSION + '/users'
 
 export default {
   state: {

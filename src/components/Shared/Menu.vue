@@ -11,8 +11,9 @@
         <el-menu-item index="6" :route="{ name: 'users.index' }"><i class="fa fa-fw fa-users"></i>Usuários</el-menu-item>
       </el-menu-item-group>
       <el-menu-item-group title="Formulários">
-        <el-menu-item index="7"><i class="fa fa-fw fa-envelope-o"></i>Contatos</el-menu-item>
-        <el-menu-item index="8"><i class="fa fa-fw fa-newspaper-o"></i>Newsletters</el-menu-item>
+        <el-menu-item index="7" :route="{ name: 'contacts.index' }"><i class="fa fa-fw fa-envelope-o"></i>Contatos</el-menu-item>
+        <el-menu-item index="8" :route="{ name: 'newsletters.index' }"><i class="fa fa-fw fa-newspaper-o"></i>Newsletters</el-menu-item>
+        <el-menu-item index="9" :route="{ name: 'resumes.index' }"><i class="fa fa-fw fa-graduation-cap"></i>Trabalhe Conosco</el-menu-item>
       </el-menu-item-group>
     </el-menu>
   </div>

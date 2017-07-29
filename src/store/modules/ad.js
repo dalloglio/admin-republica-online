@@ -8,7 +8,8 @@ export default {
     ad: {
       address: {},
       contact: {},
-      user: {}
+      user: {},
+      details: []
     }
   },
 
@@ -51,6 +52,9 @@ export default {
           }
           if (!ad.user) {
             ad.user = {}
+          }
+          if (!ad.details) {
+            ad.details = []
           }
           commit('setAd', ad)
           resolve(response)

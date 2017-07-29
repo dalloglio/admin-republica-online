@@ -6,7 +6,7 @@ export default {
   state: {
     categories: [],
     category: {
-      filters: null
+      filters: []
     }
   },
 

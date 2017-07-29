@@ -24,7 +24,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="Categoria">
-          <el-select v-model="form.category_id" placeholder="Escolha uma categoria">
+          <el-select v-model="form.category_id" placeholder="Escolha uma categoria" @change="getCategory">
             <el-option v-for="category in categories" :key="category.id" :label="category.title" :value="category.id"></el-option>
           </el-select>
         </el-form-item>
@@ -43,6 +43,19 @@
         <el-form-item label="Ativo">
           <el-switch v-model="form.status" on-color="#13ce66" off-color="#ff4949" :on-value="true" :off-value="false" on-text="Sim" off-text="Não"></el-switch>
         </el-form-item>
+
+        <div v-if="filters.length" id="filters">
+          <h2>Filtros</h2>
+          <el-row :gutter="20">
+            <el-col :xs="6" :sm="6" :md="6" :lg="6" v-for="(filter, index) in filters" :key="filter.id">
+              <el-form-item :label="filter.title">
+                <el-select v-model="form.details[filter.id]" :placeholder="filter.description">
+                  <el-option v-for="input in filter.inputs" :key="input.id" :label="input.value" :value="input.id"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
 
         <h2>Endereço</h2>
         <el-form-item label="Cep">
@@ -102,6 +115,13 @@ export default {
     }
   },
   methods: {
+    getCategory () {
+      // this.filters = []
+      // this.form.details = []
+      if (this.form.category_id) {
+        this.$store.dispatch('getCategory', this.form.category_id)
+      }
+    },
     save () {
       this.saving = true
       let params = {
@@ -146,7 +166,16 @@ export default {
   computed: {
     form () {
       let ad = this.$store.state.ad.ad
-      console.log(ad)
+      let data = []
+      if (ad.details.length) {
+        let details = ad.details
+        for (let detail in details) {
+          let index = details[detail].filter_id
+          let value = details[detail].input_id
+          data[index] = value
+        }
+      }
+      ad.details = data
       return ad
     },
     categories () {
@@ -156,6 +185,9 @@ export default {
         data = categories.data
       }
       return data
+    },
+    filters () {
+      return this.$store.state.category.category.filters
     }
   },
   created () {

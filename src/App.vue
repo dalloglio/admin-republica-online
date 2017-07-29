@@ -80,6 +80,14 @@ a:focus {
   padding: 5px;
 }
 
+/*TIPOGRAFIA*/
+h1 > small,
+h2 > small,
+h3 > small,
+h4 > small {
+  color: #999;
+}
+
 /*HELPERS*/
 .clearfix:before,
 .clearfix:after {

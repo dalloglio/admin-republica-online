@@ -28,6 +28,15 @@ import FilterIndex from '@/components/Filters/Index'
 import FilterCreate from '@/components/Filters/Create'
 import FilterEdit from '@/components/Filters/Edit'
 
+// Forms - Contacts
+import ContactIndex from '@/components/Forms/Contacts/Index'
+import ContactShow from '@/components/Forms/Contacts/Show'
+// Forms - Newsletters
+import NewsletterIndex from '@/components/Forms/Newsletters/Index'
+// Forms - Resumes
+import ResumeIndex from '@/components/Forms/Resumes/Index'
+import ResumeShow from '@/components/Forms/Resumes/Show'
+
 // Partners
 import PartnerIndex from '@/components/Partners/Index'
 import PartnerCreate from '@/components/Partners/Create'
@@ -68,6 +77,15 @@ const router = new Router({
     { path: '/filters', name: 'filters.index', component: FilterIndex, meta: { requiresAuth: true } },
     { path: '/filters/create', name: 'filters.create', component: FilterCreate, meta: { requiresAuth: true } },
     { path: '/filters/:id/edit', name: 'filters.edit', component: FilterEdit, meta: { requiresAuth: true } },
+
+    // Forms - Contacts
+    { path: '/contacts', name: 'contacts.index', component: ContactIndex, meta: { requiresAuth: true } },
+    { path: '/contacts/:id', name: 'contacts.show', component: ContactShow, meta: { requiresAuth: true } },
+    // Forms - Newsletters
+    { path: '/newsletters', name: 'newsletters.index', component: NewsletterIndex, meta: { requiresAuth: true } },
+    // Forms - Resumes
+    { path: '/resumes', name: 'resumes.index', component: ResumeIndex, meta: { requiresAuth: true } },
+    { path: '/resumes/:id', name: 'resumes.show', component: ResumeShow, meta: { requiresAuth: true } },
 
     // Partners
     { path: '/partners', name: 'partners.index', component: PartnerIndex, meta: { requiresAuth: true } },

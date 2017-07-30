@@ -117,4 +117,9 @@ h4 > small {
 .el-alert {
   margin-bottom: 20px;
 }
+
+/*CARD*/
+.el-card {
+  margin-bottom: 20px;
+}
 </style>

@@ -20,21 +20,17 @@ export default {
         }).then((response) => {
           if (response.body.status === 400) return
           if (response.body.erro === true) return
-
           this.completarFormulario(formulario, response.body)
         })
       },
 
       completarFormulario (formulario, data) {
-        console.log(formulario)
-        console.log(data)
         if (data.bairro) formulario.neighborhood = data.bairro
         if (data.logradouro) formulario.street = data.logradouro
         if (data.complemento) formulario.sub_address = data.complemento
         if (data.localidade) formulario.city = data.localidade
         if (data.uf) formulario.state = data.uf
       }
-
     }
 
     Object.defineProperties(Vue.prototype, {

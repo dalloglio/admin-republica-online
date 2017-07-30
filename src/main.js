@@ -29,6 +29,8 @@ Vue.http.interceptors.push(function (request, next) {
 
 Vue.config.productionTip = false
 
+window.events = new Vue()
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -7,6 +7,7 @@ import AuthLogout from '@/components/Auth/Logout'
 
 // Home
 import Home from '@/components/Home'
+import Teste from '@/components/Teste'
 
 // Ads
 import AdIndex from '@/components/Ads/Index'
@@ -62,6 +63,7 @@ const router = new Router({
 
     // Home
     { path: '/', name: 'home', component: Home, meta: { requiresAuth: true } },
+    { path: '/teste', name: 'teste', component: Teste, meta: { requiresAuth: true } },
 
     // Banners
     { path: '/banners', name: 'banners.index', component: BannerIndex, meta: { requiresAuth: true } },

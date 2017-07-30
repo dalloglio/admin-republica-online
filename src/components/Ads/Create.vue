@@ -13,11 +13,10 @@
       </el-button-group>
     </h1>
 
-    <el-card class="box-card">
+    <el-alert :closable="false" title="Atenção" description="Todos os campos devem ser preenchidos." type="warning" show-icon></el-alert>
 
-      <el-alert :closable="false" title="Atenção" description="Todos os campos devem ser preenchidos." type="warning" show-icon></el-alert>
-
-      <el-form label-position="top" :model="form">
+    <el-form label-position="top" :model="form">
+      <el-card class="box-card">
         <el-form-item label="Usuário">
           <el-select v-model="form.user_id" filterable remote placeholder="Digite algo para buscar um usuário" :remote-method="remoteUsers" :loading="loading">
             <el-option v-for="user in users" :key="user.id" :label="user.name" :value="user.id"></el-option>
@@ -28,24 +27,25 @@
             <el-option v-for="category in categories" :key="category.id" :label="category.title" :value="category.id"></el-option>
           </el-select>
         </el-form-item>
-
         <el-form-item label="Título">
           <el-input v-model="form.title" type="text" placeholder="Informe o título" :minlength="3" :maxlength="255"></el-input>
         </el-form-item>
         <el-form-item label="Descrição">
           <el-input v-model="form.description" type="text" placeholder="Informe uma descrição" :minlength="3" :maxlength="255"></el-input>
-          </el-form-item>
+        </el-form-item>
         <el-form-item label="Texto">
           <el-input v-model="form.content" type="textarea" placeholder="Informe o texto" :minlength="0" :maxlength="5000" :rows="4"></el-input>
-          </el-form-item>
+        </el-form-item>
         <el-form-item label="Preço">
           <el-input v-model="form.price" type="text" placeholder="Informe o preço." :minlength="3" :maxlength="10"></el-input>
-          </el-form-item>
+        </el-form-item>
         <el-form-item label="Ativo">
           <el-switch v-model="form.status" on-color="#13ce66" off-color="#ff4949" :on-value="true" :off-value="false" on-text="Sim" off-text="Não"></el-switch>
         </el-form-item>
+      </el-card>
 
-        <div v-if="filters.length" id="filters">
+      <div v-if="filters.length" id="filters">
+        <el-card class="box-card">
           <h2>Filtros</h2>
           <el-row :gutter="20">
             <el-col :xs="6" :sm="6" :md="6" :lg="6" v-for="(filter, index) in filters" :key="filter.id">
@@ -56,8 +56,10 @@
             </el-form-item>
             </el-col>
           </el-row>
-        </div>
+        </el-card>
+      </div>
 
+      <el-card class="box-card">
         <h2>Endereço</h2>
         <el-form-item label="Cep">
           <el-input v-model="form.address.zip_code" type="text" placeholder="Informe o cep" :minlength="8" :maxlength="9" @blur="pesquisarCep"></el-input>
@@ -87,7 +89,14 @@
             <el-radio label="2">Mostrar a localização exata</el-radio>
           </el-radio-group>
         </el-form-item>
+      </el-card>
 
+      <el-card class="box-card">
+        <h2>Fotos</h2>
+        <app-upload :data-files="files" :params="params" :max-files="maxFiles" @upload-remove="uploadRemove" @upload-complete="uploadComplete"></app-upload>
+      </el-card>
+
+      <el-card class="box-card">
         <h2>Contatos</h2>
         <el-form-item label="Nome">
           <el-input v-model="form.contact.name" type="text" placeholder="Informe o nome" :minlength="3" :maxlength="255"></el-input>
@@ -98,20 +107,32 @@
         <el-form-item label="WhatsApp">
           <el-input v-model="form.contact.whatsapp" type="text" placeholder="Informe o whatsapp" :minlength="11" :maxlength="15"></el-input>
         </el-form-item>
+      </el-card>
 
-        <el-button type="success" @click="save">Salvar</el-button>
-      </el-form>
-    </el-card>
+      <el-button type="success" @click="save" :loading="saving">Salvar</el-button>
+    </el-form>
   </div>
 </template>
 
 <script>
+import AppUpload from '@/components/Shared/AppUpload'
 export default {
   'name': 'ads-create',
+  components: {
+    AppUpload
+  },
   data () {
     return {
+      files: [],
+      maxFiles: 8,
+      params: {
+        id: 0,
+        input: 'photo',
+        action: 'createAdPhoto'
+      },
       users: [],
       loading: false,
+      saving: false,
       filters: [],
       form: {
         title: '',
@@ -156,11 +177,16 @@ export default {
       }
     },
     save () {
+      this.saving = true
       this.$store.dispatch('createAd', this.form).then((response) => {
         if (response.ok) {
-          this.$router.push({ name: 'ads.index' })
+          this.params.id = response.body.id
+          window.events.$emit('upload-start')
+        } else {
+          this.saving = false
         }
       }, (error) => {
+        this.saving = false
         console.log(error)
         this.$message({
           showClose: true,
@@ -189,6 +215,12 @@ export default {
       if (this.form.address.zip_code !== '') {
         this.cep.pesquisar(this.form.address.zip_code, this.form.address)
       }
+    },
+    uploadRemove (file) {
+      this.$message.success('O arquivo ' + file.name + ' foi removido com sucesso...')
+    },
+    uploadComplete () {
+      this.$router.push({ name: 'ads.index' })
     }
   },
   computed: {

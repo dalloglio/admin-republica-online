@@ -13,11 +13,10 @@
       </el-button-group>
     </h1>
 
-    <el-card class="box-card">
+    <el-alert :closable="false" title="Atenção" description="Todos os campos devem ser preenchidos." type="warning" show-icon></el-alert>
 
-      <el-alert :closable="false" title="Atenção" description="Todos os campos devem ser preenchidos." type="warning" show-icon></el-alert>
-
-      <el-form label-position="top" :model="form">
+    <el-form label-position="top" :model="form">
+      <el-card class="box-card">
         <el-form-item label="Nome completo">
           <el-input v-model="form.name" type="text" placeholder="Informe o nome completo" :minlength="3" :maxlength="255"></el-input>
         </el-form-item>
@@ -45,7 +44,7 @@
         <el-form-item label="Ativo">
           <el-switch v-model="form.status" on-color="#13ce66" off-color="#ff4949" :on-value="true" :off-value="false" on-text="Sim" off-text="Não"></el-switch>
         </el-form-item>
-        <el-form-item label="Banner">
+        <el-form-item label="Avatar">
           <div v-if="imageUrl" class="image">
             <img :src="imageUrl">
             <el-button type="danger" @click="deletePhoto">Remover</el-button>
@@ -66,9 +65,10 @@
             <div slot="tip" class="el-upload__tip">Arquivos JPEG, PNG ou GIF com um tamanho de até 2MB.</div>
           </el-upload>
         </el-form-item>
-        <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
+      </el-card>
+      <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
       </el-form>
-    </el-card>
+      </el-card>
   </div>
 </template>
 

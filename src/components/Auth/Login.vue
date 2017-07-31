@@ -33,8 +33,8 @@ export default {
     return {
       loading: false,
       user: {
-        username: 'ricardo.tech@live.com',
-        password: '123456'
+        username: '',
+        password: ''
       }
     }
   },

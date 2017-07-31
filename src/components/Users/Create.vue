@@ -13,11 +13,11 @@
       </el-button-group>
     </h1>
 
-    <el-card class="box-card">
+    <el-alert :closable="false" title="Atenção" description="Todos os campos devem ser preenchidos." type="warning" show-icon></el-alert>
 
-      <el-alert :closable="false" title="Atenção" description="Todos os campos devem ser preenchidos." type="warning" show-icon></el-alert>
 
-      <el-form label-position="top" :model="form">
+    <el-form label-position="top" :model="form">
+      <el-card class="box-card">
         <el-form-item label="Nome completo">
           <el-input v-model="form.name" type="text" placeholder="Informe o nome completo" :minlength="3" :maxlength="255"></el-input>
         </el-form-item>
@@ -66,9 +66,42 @@
             <div slot="tip" class="el-upload__tip">Arquivos JPEG, PNG ou GIF com um tamanho de até 2MB.</div>
           </el-upload>
         </el-form-item>
-        <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
-      </el-form>
-    </el-card>
+      </el-card>
+
+      <el-card class="box-card">
+        <h2>Endereço</h2>
+        <el-form-item label="Cep">
+          <el-input v-model="form.address.zip_code" type="text" placeholder="Informe o cep" :minlength="8" :maxlength="9" @blur="pesquisarCep"></el-input>
+        </el-form-item>
+        <el-form-item label="Estado">
+          <el-input v-model="form.address.state" type="text" placeholder="Informe o estado" :minlength="3" :maxlength="255"></el-input>
+        </el-form-item>
+        <el-form-item label="Cidade">
+          <el-input v-model="form.address.city" type="text" placeholder="Informe a cidade" :minlength="3" :maxlength="255"></el-input>
+        </el-form-item>
+        <el-form-item label="Bairro">
+          <el-input v-model="form.address.neighborhood" type="text" placeholder="Informe o bairro" :minlength="3" :maxlength="255"></el-input>
+        </el-form-item>
+        <el-form-item label="Rua">
+          <el-input v-model="form.address.street" type="text" placeholder="Informe a rua" :minlength="3" :maxlength="255"></el-input>
+        </el-form-item>
+        <el-form-item label="Número">
+          <el-input v-model="form.address.number" type="text" placeholder="Informe o número" :minlength="3" :maxlength="20"></el-input>
+        </el-form-item>
+        <el-form-item label="Complemento">
+          <el-input v-model="form.address.sub_address" type="text" placeholder="Informe o complemento" :minlength="3" :maxlength="255"></el-input>
+        </el-form-item>
+        <el-form-item label="No mapa">
+          <el-radio-group v-model="form.address.show_on_map">
+            <el-radio label="0">Não mostrar</el-radio>
+            <el-radio label="1">Mostrar a localização aproximada</el-radio>
+            <el-radio label="2">Mostrar a localização exata</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-card>
+
+      <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
+    </el-form>
   </div>
 </template>
 
@@ -99,7 +132,18 @@ export default {
         password: '',
         gender: '',
         birthday: '',
-        status: ''
+        status: '',
+        address: {
+          zip_code: '',
+          street: '',
+          number: '',
+          sub_address: '',
+          neighborhood: '',
+          country: 'Brasil',
+          state: '',
+          city: '',
+          show_on_map: '0'
+        }
       }
     }
   },
@@ -154,6 +198,11 @@ export default {
       console.log('onChange...')
       this.file = file.raw
       this.imageUrl = file.url
+    },
+    pesquisarCep () {
+      if (this.form.address.zip_code !== '') {
+        this.cep.pesquisar(this.form.address.zip_code, this.form.address)
+      }
     }
   }
 }

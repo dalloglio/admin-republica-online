@@ -5,7 +5,20 @@ const ENDPOINT = process.env.API_VERSION + '/users'
 export default {
   state: {
     users: [],
-    user: {}
+    user: {
+      address: {
+        zip_code: '',
+        street: '',
+        number: '',
+        sub_address: '',
+        neighborhood: '',
+        country: 'Brasil',
+        state: '',
+        city: '',
+        show_on_map: '0'
+      },
+      photo: {}
+    }
   },
 
   getters: {
@@ -41,8 +54,30 @@ export default {
     },
 
     getUser ({ commit }, id) {
-      Vue.http.get(ENDPOINT + '/' + id).then((response) => {
-        commit('setUser', response.body)
+      return new Promise((resolve, reject) => {
+        Vue.http.get(ENDPOINT + '/' + id).then((response) => {
+          let user = response.body
+          if (!user.address) {
+            user.address = {
+              zip_code: '',
+              street: '',
+              number: '',
+              sub_address: '',
+              neighborhood: '',
+              country: 'Brasil',
+              state: '',
+              city: '',
+              show_on_map: '0'
+            }
+          }
+          if (!user.photo) {
+            user.photo = {}
+          }
+          commit('setUser', user)
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
       })
     },
 

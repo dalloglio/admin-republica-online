@@ -13,11 +13,10 @@
       </el-button-group>
     </h1>
 
-    <el-card class="box-card">
+    <el-alert :closable="false" title="Atenção" description="Todos os campos devem ser preenchidos." type="warning" show-icon></el-alert>
 
-      <el-alert :closable="false" title="Atenção" description="Todos os campos devem ser preenchidos." type="warning" show-icon></el-alert>
-
-      <el-form label-position="top" :model="form">
+    <el-form label-position="top" :model="form">
+      <el-card class="box-card">
         <el-form-item label="Usuário">
           <el-select v-model="form.user_id" filterable remote placeholder="Digite algo para buscar um usuário" :remote-method="remoteUsers" :loading="loading" :default-first-option="false">
             <el-option v-for="user in users" :key="user.id" :label="user.name" :value="user.id"></el-option>
@@ -33,18 +32,20 @@
         </el-form-item>
         <el-form-item label="Descrição">
           <el-input v-model="form.description" type="text" placeholder="Informe uma descrição" :minlength="3" :maxlength="255"></el-input>
-          </el-form-item>
+        </el-form-item>
         <el-form-item label="Texto">
           <el-input v-model="form.content" type="textarea" placeholder="Informe o texto" :minlength="0" :maxlength="5000" :rows="4"></el-input>
-          </el-form-item>
+        </el-form-item>
         <el-form-item label="Preço">
           <el-input v-model="form.price" type="text" placeholder="Informe o preço." :minlength="3" :maxlength="10"></el-input>
-          </el-form-item>
+        </el-form-item>
         <el-form-item label="Ativo">
           <el-switch v-model="form.status" on-color="#13ce66" off-color="#ff4949" :on-value="true" :off-value="false" on-text="Sim" off-text="Não"></el-switch>
         </el-form-item>
+      </el-card>
 
-        <div v-if="filters.length" id="filters">
+      <div v-if="filters.length" id="filters">
+        <el-card class="box-card">
           <h2>Filtros</h2>
           <el-row :gutter="20">
             <el-col :xs="6" :sm="6" :md="6" :lg="6" v-for="(filter, index) in filters" :key="filter.id">
@@ -55,8 +56,10 @@
               </el-form-item>
             </el-col>
           </el-row>
-        </div>
+        </el-card>
+      </div>
 
+      <el-card class="box-card">
         <h2>Endereço</h2>
         <el-form-item label="Cep">
           <el-input v-model="form.address.zip_code" type="text" placeholder="Informe o cep" :minlength="8" :maxlength="9"></el-input>
@@ -86,7 +89,14 @@
             <el-radio label="2">Mostrar a localização exata</el-radio>
           </el-radio-group>
         </el-form-item>
+      </el-card>
 
+      <el-card class="box-card">
+        <h2>Fotos</h2>
+        <app-upload :data-files="files" :params="params" :max-files="maxFiles" @upload-remove="uploadRemove" @upload-complete="uploadComplete"></app-upload>
+      </el-card>
+
+      <el-card class="box-card">
         <h2>Contatos</h2>
         <el-form-item label="Nome">
           <el-input v-model="form.contact.name" type="text" placeholder="Informe o nome" :minlength="3" :maxlength="255"></el-input>
@@ -97,17 +107,28 @@
         <el-form-item label="WhatsApp">
           <el-input v-model="form.contact.whatsapp" type="text" placeholder="Informe o whatsapp" :minlength="11" :maxlength="15"></el-input>
         </el-form-item>
-        <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
-      </el-form>
-    </el-card>
+      </el-card>
+
+      <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
+    </el-form>
   </div>
 </template>
 
 <script>
+import AppUpload from '@/components/Shared/AppUpload'
 export default {
   'name': 'ads-edit',
+  components: {
+    AppUpload
+  },
   data () {
     return {
+      maxFiles: 8,
+      params: {
+        id: this.$route.params.id,
+        input: 'photo',
+        action: 'createAdPhoto'
+      },
       users: [],
       loading: false,
       saving: false,
@@ -116,8 +137,6 @@ export default {
   },
   methods: {
     getCategory () {
-      // this.filters = []
-      // this.form.details = []
       if (this.form.category_id) {
         this.$store.dispatch('getCategory', this.form.category_id)
       }
@@ -129,18 +148,15 @@ export default {
         data: this.form
       }
       this.$store.dispatch('updateAd', params).then((response) => {
-        this.saving = false
         if (response.ok) {
-          this.$router.push({ name: 'ads.index' })
+          window.events.$emit('upload-start')
+        } else {
+          this.saving = false
         }
       }, (error) => {
         this.saving = false
         console.log(error)
-        this.$message({
-          showClose: true,
-          message: 'Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.',
-          type: 'error'
-        })
+        this.$message.error('Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.')
       })
     },
     remoteUsers (query) {
@@ -161,6 +177,15 @@ export default {
       } else {
         this.users = []
       }
+    },
+    pesquisarCep () {
+      if (this.form.address.zip_code !== '') {
+        this.cep.pesquisar(this.form.address.zip_code, this.form.address)
+      }
+    },
+    uploadRemove () {},
+    uploadComplete () {
+      this.$router.push({ name: 'ads.index' })
     }
   },
   computed: {
@@ -177,6 +202,18 @@ export default {
       }
       ad.details = data
       return ad
+    },
+    files () {
+      let photos = this.$store.state.ad.ad.photos
+      let files = []
+      photos.forEach((file, index) => {
+        files.push({
+          id: file.id,
+          name: file.name,
+          url: this.$store.getters.urlPhoto(file.id)
+        })
+      })
+      return files
     },
     categories () {
       let categories = this.$store.state.category.categories

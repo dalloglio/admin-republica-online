@@ -238,11 +238,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  fieldset {
-    border: 0 none;
-    padding: 0;
-    margin: 0 auto;
-  }
-</style>

@@ -51,6 +51,7 @@ import UserEdit from '@/components/Users/Edit'
 Vue.use(Router)
 
 const router = new Router({
+  canReuse: false,
   routes: [
     // Auth
     { path: '/login', name: 'auth.login', component: AuthLogin, meta: { requiresAuth: false } },

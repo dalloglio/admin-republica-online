@@ -44,7 +44,8 @@ export default {
   data () {
     return {
       files: this.dataFiles,
-      fileList: []
+      fileList: this.dataFiles,
+      filesToUpload: 0
     }
   },
   methods: {
@@ -59,6 +60,7 @@ export default {
       }
 
       Array.from(fileList).forEach((file) => {
+        this.filesToUpload++
         file.url = window.URL.createObjectURL(file)
         this.fileList.push(file)
       })
@@ -86,29 +88,41 @@ export default {
       }
     },
     uploadStart () {
-      let self = this
-      let total = 0
-      self.files.forEach((file, index) => {
-        let formData = new FormData()
-        formData.append(self.params.input, file, file.name)
-        let params = {
-          id: self.params.id,
-          data: formData
-        }
-        self.$store.dispatch(self.params.action, params).then((response) => {
-          if (response.ok) {
-            total++
-            if (total === self.files.length) {
-              self.files = []
-              self.fileList = []
-              self.$emit('upload-complete')
+      if (this.filesToUpload > 0) {
+        let self = this
+        let total = 0
+        self.files.forEach((file, index) => {
+          if (file.id > 0) {
+            self.files = []
+            self.fileList = []
+            self.$emit('upload-complete')
+          } else {
+            let formData = new FormData()
+            formData.append(self.params.input, file, file.name)
+            let params = {
+              id: self.params.id,
+              data: formData
             }
+            self.$store.dispatch(self.params.action, params).then((response) => {
+              if (response.ok) {
+                total++
+                if (total === this.filesToUpload) {
+                  self.files = []
+                  self.fileList = []
+                  self.$emit('upload-complete')
+                }
+              }
+            }, (error) => {
+              console.log(error)
+              self.$message.error('O arquivo ' + file.name + ' não foi enviado.')
+            })
           }
-        }, (error) => {
-          console.log(error)
-          self.$message.error('O arquivo ' + file.name + ' não foi enviado.')
         })
-      })
+      } else {
+        this.files = []
+        this.fileList = []
+        this.$emit('upload-complete')
+      }
     }
   },
   created () {

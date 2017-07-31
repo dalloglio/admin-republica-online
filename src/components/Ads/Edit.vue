@@ -62,7 +62,7 @@
       <el-card class="box-card">
         <h2>Endereço</h2>
         <el-form-item label="Cep">
-          <el-input v-model="form.address.zip_code" type="text" placeholder="Informe o cep" :minlength="8" :maxlength="9"></el-input>
+          <el-input v-model="form.address.zip_code" type="text" placeholder="Informe o cep" :minlength="8" :maxlength="9" @blur="pesquisarCep"></el-input>
         </el-form-item>
         <el-form-item label="Estado">
           <el-input v-model="form.address.state" type="text" placeholder="Informe o estado" :minlength="3" :maxlength="255"></el-input>

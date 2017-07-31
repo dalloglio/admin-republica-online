@@ -17,7 +17,6 @@
 
     <el-form label-position="top" :model="form">
       <el-card class="box-card">
-        <el-card class="box-card">
         <el-form-item label="Nome completo">
           <el-input v-model="form.name" type="text" placeholder="Informe o nome completo" :minlength="3" :maxlength="255"></el-input>
         </el-form-item>

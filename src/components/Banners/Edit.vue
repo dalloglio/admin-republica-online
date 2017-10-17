@@ -1,5 +1,5 @@
 <template>
-  <div class="banners edit">
+  <div v-if="form.id" class="banners edit">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ name: 'home' }">Home</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'banners.index' }">Banners</el-breadcrumb-item>
@@ -43,6 +43,7 @@
             :data="upload.data"
             :name="upload.name"
             :action="upload.action"
+            :file-list="fileList"
             :list-type="upload.list_type"
             :show-file-list="upload.show_file_list"
             :multiple="upload.multiple"
@@ -73,6 +74,7 @@ export default {
       imageUrl: '',
       saving: false,
       upload: {
+        data: {},
         name: 'photo',
         action: '',
         show_file_list: false,
@@ -174,7 +176,7 @@ export default {
   },
   computed: {
     form () {
-      return this.$store.state.banner.banner
+      return this.$store.state.banner.banner || {}
     },
     photo () {
       if (!this.form.photo) {
@@ -184,6 +186,12 @@ export default {
         }
       }
       return this.form.photo
+    },
+    fileList () {
+      return [{
+        name: this.photo.name || '',
+        url: this.photoUrl || ''
+      }]
     },
     photoUrl () {
       let url = ''

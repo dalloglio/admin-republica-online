@@ -34,6 +34,12 @@
             <el-option v-for="item in values" :key="item" :label="item" :value="item"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="Ícone">
+          <el-input v-model="form.icon" type="text" placeholder="Informe o ícone" :minlength="3" :maxlength="255"></el-input>
+        </el-form-item>
+        <el-form-item label="Ordem">
+          <el-input-number v-model="form.order" @change="handleChange" :min="0" :max="1000"></el-input-number>
+        </el-form-item>
         <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
       </el-form>
     </el-card>

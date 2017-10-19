@@ -204,6 +204,9 @@ export default {
   },
   created () {
     this.$store.dispatch('getBanner', this.$route.params.id)
+  },
+  beforeDestroy () {
+    this.$store.commit('setBanner', {})
   }
 }
 </script>

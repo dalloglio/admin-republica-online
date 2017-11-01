@@ -35,10 +35,33 @@
           </el-select>
         </el-form-item>
         <el-form-item label="Ícone">
-          <el-input v-model="form.icon" type="text" placeholder="Informe o ícone" :minlength="3" :maxlength="255"></el-input>
+          <div v-if="imageUrl" class="image">
+            <img :src="imageUrl">
+            <el-button type="danger" @click="deletePhoto">Remover</el-button>
+          </div>
+          <el-upload
+            v-else
+            class="uploader"
+            :data="upload.data"
+            :name="upload.name"
+            :action="upload.action"
+            :list-type="upload.list_type"
+            :show-file-list="upload.show_file_list"
+            :multiple="upload.multiple"
+            :accept="upload.accept"
+            :auto-upload="upload.auto"
+            :on-preview="onPreview"
+            :on-remove="onRemove"
+            :on-success="onSuccess"
+            :on-error="onError"
+            :on-change="onChange"
+            :beforeUpload="beforeUpload">
+            <i class="el-icon-plus"></i>
+            <div slot="tip" class="el-upload__tip">Arquivo PNG com fundo transparente, nas dimensões 40px por 40px com um tamanho de até 2MB.</div>
+          </el-upload>
         </el-form-item>
         <el-form-item label="Ordem">
-          <el-input-number v-model="form.order" @change="handleChange" :min="0" :max="1000"></el-input-number>
+          <el-input-number v-model="form.order" :min="0" :max="1000"></el-input-number>
         </el-form-item>
         <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
       </el-form>
@@ -51,7 +74,21 @@ export default {
   'name': 'filters-create',
   data () {
     return {
+      file: null,
+      imageUrl: '',
       saving: false,
+      upload: {
+        data: {},
+        name: 'photo',
+        action: '',
+        show_file_list: false,
+        list_type: 'text',
+        fileList: [],
+        multiple: false,
+        accept: 'image/*',
+        auto: false,
+        disabled: true
+      },
       form: {
         title: '',
         description: '',
@@ -72,7 +109,23 @@ export default {
       this.$store.dispatch('createFilter', this.form).then((response) => {
         this.saving = true
         if (response.ok) {
-          this.$router.push({ name: 'filters.index' })
+          if (this.file) {
+            let photoData = new FormData()
+            photoData.append('photo', this.file)
+            let params = {
+              id: response.body.id,
+              data: photoData
+            }
+            this.$store.dispatch('createFilterPhoto', params).then((response) => {
+              if (response.ok) {
+                this.$router.push({ name: 'filters.index' })
+              }
+            }, (error) => {
+              console.log(error)
+            })
+          } else {
+            this.$router.push({ name: 'filters.index' })
+          }
         }
       }, (error) => {
         console.log(error)
@@ -82,7 +135,110 @@ export default {
           type: 'error'
         })
       })
+    },
+    deletePhoto () {
+      console.log(this.file)
+      if (Number.isInteger(this.file.id)) {
+        this.$store.dispatch('deletePhoto', this.file.id).then((response) => {
+          if (response.ok) {
+            this.file = ''
+            this.imageUrl = ''
+          }
+        }, (error) => {
+          console.log(error)
+        })
+      } else {
+        this.file = ''
+        this.imageUrl = ''
+      }
+    },
+    onPreview (file) {
+      console.log('onPreview...')
+    },
+    onRemove (file, fileList) {
+      console.log('onRemove...')
+      this.deletePhoto()
+    },
+    onSuccess (response, file, fileList) {
+      console.log('onSuccess...')
+    },
+    onError (error, file, fileList) {
+      console.log('onError...')
+      return error
+    },
+    onChange (file, fileList) {
+      console.log('onChange...')
+      this.file = file.raw
+      this.imageUrl = file.url
+    },
+    beforeUpload (file) {
+      console.log('beforeUpload...')
+      console.log(file)
     }
   }
 }
 </script>
+
+<style>
+.uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.uploader .el-upload:hover {
+  border-color: #20a0ff;
+}
+.uploader .el-icon-plus,
+.uploader .el-icon-close {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.image {
+  position: relative;
+  z-index: 1;
+}
+.image:before {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,.8);
+  z-index: 2;
+  display: none;
+}
+.image:hover:before {
+  display: block;
+}
+.image img {
+  display: block;
+  max-width: 100%;
+  min-width: 178px;
+  min-height: 178px;
+  height: auto;
+  z-index: 1;
+  border: 1px solid #ccc;
+}
+.image button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  -o-transform: translateX(-50%) translateY(-50%);
+  -ms-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  display: none;
+  z-index: 3;
+}
+.image:hover button {
+  display: block;
+}
+</style>

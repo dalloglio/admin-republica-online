@@ -7,7 +7,7 @@
 
           <h1><small>Admin</small>Login</h1>
 
-          <el-form ref="formLogin" label-position="top" :model="user" :rules="rules" class="clearfix" @submit.native="onSubmit">
+          <el-form ref="formLogin" label-position="top" :model="user" :rules="rules" class="clearfix">
             <el-form-item label="E-mail" prop="username">
               <el-input v-model="user.username" :required="true" placeholder="E-mail" type="email" :minlength="3" :maxlength="255" :autofocus="true" auto-complete="off"></el-input>
             </el-form-item>
@@ -16,7 +16,7 @@
               <el-input v-model="user.password" :required="true" placeholder="Senha" type="password" :minlength="6" :maxlength="20" auto-complete="off"></el-input>
             </el-form-item>
 
-            <el-button type="primary" native-type="submit" class="right" :loading="loading">Entrar</el-button>
+            <el-button type="primary" class="right" :loading="loading" @click="onSubmit">Entrar</el-button>
           </el-form>
 
         </el-card>
@@ -56,7 +56,9 @@ export default {
           this.$auth.login(this.user).then((response) => {
             this.loading = false
             if (response.status === true) {
-              this.$router.push({ name: response.redirect })
+              this.$store.dispatch('getAuthUser').then(() => {
+                this.$router.push({ name: response.redirect })
+              })
             } else {
               this.message('Ops, não foi possível fazer login! ' + response.message || '')
             }

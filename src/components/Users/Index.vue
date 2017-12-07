@@ -69,6 +69,9 @@ export default {
   },
   created () {
     this.$store.dispatch('getUsers')
+  },
+  beforeDestroy () {
+    this.$store.commit('setUsers', [])
   }
 }
 </script>

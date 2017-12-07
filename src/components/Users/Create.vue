@@ -92,14 +92,12 @@
         </el-form-item>
         <el-form-item label="No mapa">
           <el-radio-group v-model="form.address.show_on_map">
-            <el-radio label="0">Não mostrar</el-radio>
-            <el-radio label="1">Mostrar a localização aproximada</el-radio>
-            <el-radio label="2">Mostrar a localização exata</el-radio>
+            <el-radio v-for="option in showOnMapOptions" :key="option.key" :label="option.key">{{ option.value }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-card>
 
-      <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
+      <el-button type="success" @click="save" :loading="saving">Salvar</el-button>
     </el-form>
   </div>
 </template>
@@ -141,13 +139,19 @@ export default {
           country: 'Brasil',
           state: '',
           city: '',
-          show_on_map: '0'
+          show_on_map: 'default'
         }
-      }
+      },
+      showOnMapOptions: [
+        { key: 'default', value: 'Não mostrar' },
+        { key: 'approximate', value: 'Mostrar a localização aproximada' },
+        { key: 'exact', value: 'Mostrar a localização exata' }
+      ]
     }
   },
   methods: {
     save () {
+      this.saving = true
       this.form.birthday = this.date.toDate(this.form.birthday)
       this.$store.dispatch('createUser', this.form).then((response) => {
         if (response.ok) {
@@ -159,17 +163,23 @@ export default {
               data: photoData
             }
             this.$store.dispatch('createUserPhoto', params).then((response) => {
+              this.saving = false
               if (response.ok) {
                 this.$router.push({ name: 'users.index' })
               }
             }, (error) => {
+              this.saving = false
               console.log(error)
             })
           } else {
+            this.saving = false
             this.$router.push({ name: 'users.index' })
           }
+        } else {
+          this.saving = false
         }
       }, (error) => {
+        this.saving = false
         console.log(error)
         this.$message({
           showClose: true,

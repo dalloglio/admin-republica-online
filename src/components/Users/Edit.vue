@@ -97,7 +97,7 @@
         </el-form-item>
       </el-card>
 
-      <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
+      <el-button type="success" @click="save" :loading="saving">Salvar</el-button>
     </el-form>
   </div>
 </template>
@@ -130,6 +130,7 @@ export default {
   },
   methods: {
     save () {
+      this.saving = true
       this.form.birthday = this.date.toDate(this.form.birthday)
       let params = {
         id: this.$route.params.id,
@@ -145,17 +146,23 @@ export default {
               data: photoData
             }
             this.$store.dispatch('createUserPhoto', params).then((response) => {
+              this.saving = false
               if (response.ok) {
                 this.$router.push({ name: 'users.index' })
               }
             }, (error) => {
+              this.saving = false
               console.log(error)
             })
           } else {
+            this.saving = false
             this.$router.push({ name: 'users.index' })
           }
+        } else {
+          this.saving = false
         }
       }, (error) => {
+        this.saving = false
         console.log(error)
         this.$message({
           showClose: true,

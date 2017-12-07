@@ -214,6 +214,9 @@ export default {
   },
   created () {
     this.$store.dispatch('getUser', this.$route.params.id)
+  },
+  beforeDestroy () {
+    this.$store.commit('setUser', {})
   }
 }
 </script>

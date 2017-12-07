@@ -55,6 +55,7 @@
             :data="upload.data"
             :name="upload.name"
             :action="upload.action"
+            :file-list="fileList"
             :list-type="upload.list_type"
             :show-file-list="upload.show_file_list"
             :multiple="upload.multiple"
@@ -211,6 +212,12 @@ export default {
         }
       }
       return this.form.photo
+    },
+    fileList () {
+      return [{
+        name: this.photo.name || '',
+        url: this.photoUrl || ''
+      }]
     },
     photoUrl () {
       let url = ''

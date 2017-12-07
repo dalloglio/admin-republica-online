@@ -204,7 +204,6 @@ export default {
       }
     },
     onChange (file, fileList) {
-      console.log('onChange...')
       this.file = file.raw
       this.imageUrl = file.url
     },

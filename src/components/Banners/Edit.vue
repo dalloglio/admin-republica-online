@@ -49,12 +49,7 @@
             :multiple="upload.multiple"
             :accept="upload.accept"
             :auto-upload="upload.auto"
-            :on-preview="onPreview"
-            :on-remove="onRemove"
-            :on-success="onSuccess"
-            :on-error="onError"
-            :on-change="onChange"
-            :beforeUpload="beforeUpload">
+            :on-change="onChange">
             <i class="el-icon-plus"></i>
             <div slot="tip" class="el-upload__tip">Arquivos JPEG, PNG ou GIF com um tamanho de até 2MB.</div>
           </el-upload>
@@ -150,28 +145,9 @@ export default {
         this.imageUrl = ''
       }
     },
-    onPreview (file) {
-      console.log('onPreview...')
-    },
-    onRemove (file, fileList) {
-      console.log('onRemove...')
-      this.deletePhoto()
-    },
-    onSuccess (response, file, fileList) {
-      console.log('onSuccess...')
-    },
-    onError (error, file, fileList) {
-      console.log('onError...')
-      return error
-    },
     onChange (file, fileList) {
-      console.log('onChange...')
       this.file = file.raw
       this.imageUrl = file.url
-    },
-    beforeUpload (file) {
-      console.log('beforeUpload...')
-      console.log(file)
     }
   },
   computed: {

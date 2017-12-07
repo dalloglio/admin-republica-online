@@ -1,5 +1,5 @@
 <template>
-  <div class="users edit">
+  <div v-if="form.name" class="users edit">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ name: 'home' }">Home</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'users.index' }">Usuários</el-breadcrumb-item>
@@ -92,9 +92,7 @@
         </el-form-item>
         <el-form-item label="No mapa">
           <el-radio-group v-model="form.address.show_on_map">
-            <el-radio label="0">Não mostrar</el-radio>
-            <el-radio label="1">Mostrar a localização aproximada</el-radio>
-            <el-radio label="2">Mostrar a localização exata</el-radio>
+            <el-radio v-for="option in showOnMapOptions" :key="option.key" :label="option.key">{{ option.value }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-card>
@@ -122,7 +120,12 @@ export default {
         accept: 'image/*',
         auto: false,
         disabled: true
-      }
+      },
+      showOnMapOptions: [
+        { key: 'default', value: 'Não mostrar' },
+        { key: 'approximate', value: 'Mostrar a localização aproximada' },
+        { key: 'exact', value: 'Mostrar a localização exata' }
+      ]
     }
   },
   methods: {
@@ -180,7 +183,6 @@ export default {
       }
     },
     onChange (file, fileList) {
-      console.log('onChange...')
       this.file = file.raw
       this.imageUrl = file.url
     },

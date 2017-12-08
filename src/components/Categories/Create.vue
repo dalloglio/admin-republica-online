@@ -32,7 +32,7 @@
         <el-form-item label="Ativo">
           <el-switch v-model="form.status" on-color="#13ce66" off-color="#ff4949" :on-value="true" :off-value="false" on-text="Sim" off-text="Não"></el-switch>
         </el-form-item>
-        <el-button type="success" @click="save">Salvar</el-button>
+        <el-button type="success" @click="save" :loading="saving">Salvar</el-button>
       </el-form>
     </el-card>
   </div>
@@ -43,6 +43,7 @@ export default {
   'name': 'categories-create',
   data () {
     return {
+      saving: false,
       form: {
         title: '',
         description: '',
@@ -74,11 +75,14 @@ export default {
   },
   methods: {
     save () {
+      this.saving = true
       this.$store.dispatch('createCategory', this.form).then((response) => {
+        this.saving = false
         if (response.ok) {
           this.$router.push({ name: 'categories.index' })
         }
       }, (error) => {
+        this.saving = false
         console.log(error)
         this.$message({
           showClose: true,

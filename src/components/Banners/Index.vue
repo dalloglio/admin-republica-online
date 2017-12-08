@@ -66,6 +66,9 @@ export default {
   },
   created () {
     this.$store.dispatch('getBanners')
+  },
+  beforeDestroy () {
+    this.$store.commit('setBanners', [])
   }
 }
 </script>

@@ -48,7 +48,7 @@
             <div slot="tip" class="el-upload__tip">Arquivos JPEG, PNG ou GIF com um tamanho de até 2MB.</div>
           </el-upload>
         </el-form-item>
-        <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
+        <el-button type="success" @click="save" :loading="saving">Salvar</el-button>
       </el-form>
     </el-card>
   </div>
@@ -84,7 +84,6 @@ export default {
     save () {
       this.saving = true
       this.$store.dispatch('createPartner', this.form).then((response) => {
-        this.saving = false
         if (response.ok) {
           if (this.file) {
             let photoData = new FormData()
@@ -94,15 +93,20 @@ export default {
               data: photoData
             }
             this.$store.dispatch('createPartnerPhoto', params).then((response) => {
+              this.saving = false
               if (response.ok) {
                 this.$router.push({ name: 'partners.index' })
               }
             }, (error) => {
+              this.saving = false
               console.log(error)
             })
           } else {
+            this.saving = false
             this.$router.push({ name: 'partners.index' })
           }
+        } else {
+          this.saving = false
         }
       }, (error) => {
         this.saving = false
@@ -130,7 +134,6 @@ export default {
       }
     },
     onChange (file, fileList) {
-      console.log('onChange...')
       this.file = file.raw
       this.imageUrl = file.url
     }

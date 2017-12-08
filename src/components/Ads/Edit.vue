@@ -31,10 +31,7 @@
           <el-input v-model="form.title" type="text" placeholder="Informe o título" :minlength="3" :maxlength="255"></el-input>
         </el-form-item>
         <el-form-item label="Descrição">
-          <el-input v-model="form.description" type="text" placeholder="Informe uma descrição" :minlength="3" :maxlength="255"></el-input>
-        </el-form-item>
-        <el-form-item label="Texto">
-          <el-input v-model="form.content" type="textarea" placeholder="Informe o texto" :minlength="0" :maxlength="5000" :rows="4"></el-input>
+          <el-input v-model="form.description" type="textarea" placeholder="Informe uma descrição" :minlength="10" :maxlength="~500" :rows="4"></el-input>
         </el-form-item>
         <el-form-item label="Preço">
           <el-input v-model="form.price" type="text" placeholder="Informe o preço." :minlength="3" :maxlength="10"></el-input>
@@ -84,9 +81,7 @@
         </el-form-item>
         <el-form-item label="No mapa">
           <el-radio-group v-model="form.address.show_on_map">
-            <el-radio label="0">Não mostrar</el-radio>
-            <el-radio label="1">Mostrar a localização aproximada</el-radio>
-            <el-radio label="2">Mostrar a localização exata</el-radio>
+            <el-radio v-for="option in showOnMapOptions" :key="option.key" :label="option.key">{{ option.value }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-card>
@@ -132,7 +127,12 @@ export default {
       users: [],
       loading: false,
       saving: false,
-      query: ''
+      query: '',
+      showOnMapOptions: [
+        { key: 'default', value: 'Não mostrar' },
+        { key: 'approximate', value: 'Mostrar a localização aproximada' },
+        { key: 'exact', value: 'Mostrar a localização exata' }
+      ]
     }
   },
   methods: {

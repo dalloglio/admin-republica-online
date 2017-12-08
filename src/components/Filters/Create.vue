@@ -58,7 +58,7 @@
         <el-form-item label="Ordem">
           <el-input-number v-model="form.order" :min="0" :max="1000"></el-input-number>
         </el-form-item>
-        <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
+        <el-button type="success" @click="save" :loading="saving">Salvar</el-button>
       </el-form>
     </el-card>
   </div>
@@ -101,8 +101,8 @@ export default {
   },
   methods: {
     save () {
+      this.saving = true
       this.$store.dispatch('createFilter', this.form).then((response) => {
-        this.saving = true
         if (response.ok) {
           if (this.file) {
             let photoData = new FormData()
@@ -112,17 +112,23 @@ export default {
               data: photoData
             }
             this.$store.dispatch('createFilterPhoto', params).then((response) => {
+              this.saving = false
               if (response.ok) {
                 this.$router.push({ name: 'filters.index' })
               }
             }, (error) => {
+              this.saving = false
               console.log(error)
             })
           } else {
+            this.saving = false
             this.$router.push({ name: 'filters.index' })
           }
+        } else {
+          this.saving = false
         }
       }, (error) => {
+        this.saving = false
         console.log(error)
         this.$message({
           showClose: true,

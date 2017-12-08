@@ -1,5 +1,5 @@
 <template>
-  <div class="filters edit">
+  <div v-if="form.id" class="filters edit">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ name: 'home' }">Home</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'filters.index' }">Filtros</el-breadcrumb-item>
@@ -51,12 +51,7 @@
             :multiple="upload.multiple"
             :accept="upload.accept"
             :auto-upload="upload.auto"
-            :on-preview="onPreview"
-            :on-remove="onRemove"
-            :on-success="onSuccess"
-            :on-error="onError"
-            :on-change="onChange"
-            :beforeUpload="beforeUpload">
+            :on-change="onChange">
             <i class="el-icon-plus"></i>
             <div slot="tip" class="el-upload__tip">Arquivo PNG com fundo transparente, nas dimensões 40px por 40px com um tamanho de até 2MB.</div>
           </el-upload>
@@ -64,7 +59,7 @@
         <el-form-item label="Ordem">
           <el-input-number v-model="form.order" :min="0" :max="1000"></el-input-number>
         </el-form-item>
-        <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
+        <el-button type="success" @click="save" :loading="saving">Salvar</el-button>
       </el-form>
     </el-card>
   </div>
@@ -99,6 +94,7 @@ export default {
   },
   methods: {
     save () {
+      this.saving = true
       let params = {
         id: this.$route.params.id,
         data: this.form
@@ -113,17 +109,23 @@ export default {
               data: photoData
             }
             this.$store.dispatch('createFilterPhoto', params).then((response) => {
+              this.saving = false
               if (response.ok) {
                 this.$router.push({ name: 'filters.index' })
               }
             }, (error) => {
+              this.saving = false
               console.log(error)
             })
           } else {
+            this.saving = false
             this.$router.push({ name: 'filters.index' })
           }
+        } else {
+          this.saving = false
         }
       }, (error) => {
+        this.saving = false
         console.log(error)
         this.$message({
           showClose: true,
@@ -150,28 +152,9 @@ export default {
         this.imageUrl = ''
       }
     },
-    onPreview (file) {
-      console.log('onPreview...')
-    },
-    onRemove (file, fileList) {
-      console.log('onRemove...')
-      this.deletePhoto()
-    },
-    onSuccess (response, file, fileList) {
-      console.log('onSuccess...')
-    },
-    onError (error, file, fileList) {
-      console.log('onError...')
-      return error
-    },
     onChange (file, fileList) {
-      console.log('onChange...')
       this.file = file.raw
       this.imageUrl = file.url
-    },
-    beforeUpload (file) {
-      console.log('beforeUpload...')
-      console.log(file)
     }
   },
   computed: {

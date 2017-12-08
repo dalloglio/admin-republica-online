@@ -53,7 +53,7 @@
             <div slot="tip" class="el-upload__tip">Arquivos JPEG, PNG ou GIF com um tamanho de até 2MB.</div>
           </el-upload>
         </el-form-item>
-        <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
+        <el-button type="success" @click="save" :loading="saving">Salvar</el-button>
       </el-form>
     </el-card>
   </div>
@@ -97,7 +97,6 @@ export default {
     save () {
       this.saving = true
       this.$store.dispatch('createBanner', this.form).then((response) => {
-        this.saving = false
         if (response.ok) {
           if (this.file) {
             let photoData = new FormData()
@@ -107,15 +106,20 @@ export default {
               data: photoData
             }
             this.$store.dispatch('createBannerPhoto', params).then((response) => {
+              this.saving = false
               if (response.ok) {
                 this.$router.push({ name: 'banners.index' })
               }
             }, (error) => {
+              this.saving = false
               console.log(error)
             })
           } else {
+            this.saving = false
             this.$router.push({ name: 'banners.index' })
           }
+        } else {
+          this.saving = false
         }
       }, (error) => {
         this.saving = false

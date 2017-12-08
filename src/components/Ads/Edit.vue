@@ -62,7 +62,7 @@
           <el-input v-model="form.address.zip_code" type="text" placeholder="Informe o cep" :minlength="8" :maxlength="9" @blur="pesquisarCep"></el-input>
         </el-form-item>
         <el-form-item label="Estado">
-          <el-input v-model="form.address.state" type="text" placeholder="Informe o estado" :minlength="3" :maxlength="255"></el-input>
+          <el-input v-model="form.address.state_initials" type="text" placeholder="Informe o estado" :minlength="2" :maxlength="2"></el-input>
         </el-form-item>
         <el-form-item label="Cidade">
           <el-input v-model="form.address.city" type="text" placeholder="Informe a cidade" :minlength="3" :maxlength="255"></el-input>
@@ -88,7 +88,12 @@
 
       <el-card class="box-card">
         <h2>Fotos</h2>
-        <app-upload :data-files="files" :params="params" :max-files="maxFiles" @upload-remove="uploadRemove" @upload-complete="uploadComplete"></app-upload>
+        <app-upload
+        :data-files="files"
+        :params="params"
+        :max-files="maxFiles"
+        @upload-remove="uploadRemove"
+        @upload-complete="uploadComplete"></app-upload>
       </el-card>
 
       <el-card class="box-card">
@@ -104,7 +109,7 @@
         </el-form-item>
       </el-card>
 
-      <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
+      <el-button type="success" @click="save" :loading="saving">Salvar</el-button>
     </el-form>
   </div>
 </template>
@@ -192,8 +197,9 @@ export default {
     form () {
       let ad = this.$store.state.ad.ad
       let data = []
-      if (ad.details.length) {
-        let details = ad.details
+      let detailsAd = ad.details || []
+      if (detailsAd.length) {
+        let details = detailsAd
         for (let detail in details) {
           let index = details[detail].filter_id
           let value = details[detail].input_id
@@ -201,10 +207,19 @@ export default {
         }
       }
       ad.details = data
+
+      if (!ad.address) {
+        ad.address = {}
+      }
+
+      if (!ad.contact) {
+        ad.contact = {}
+      }
+
       return ad
     },
     files () {
-      let photos = this.$store.state.ad.ad.photos
+      let photos = this.$store.state.ad.ad.photos || []
       let files = []
       photos.forEach((file, index) => {
         files.push({
@@ -216,7 +231,7 @@ export default {
       return files
     },
     categories () {
-      let categories = this.$store.state.category.categories
+      let categories = this.$store.state.category.categories || {}
       let data = []
       if (categories.data) {
         data = categories.data
@@ -224,12 +239,15 @@ export default {
       return data
     },
     filters () {
-      return this.$store.state.category.category.filters
+      return this.$store.state.category.category.filters || []
     }
   },
   created () {
     this.$store.dispatch('getAd', this.$route.params.id)
     this.$store.dispatch('getCategories')
+  },
+  beforeDestroy () {
+    this.$store.commit('setAd', {})
   }
 }
 </script>

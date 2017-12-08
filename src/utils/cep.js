@@ -29,6 +29,7 @@ export default {
         if (data.logradouro) formulario.street = data.logradouro
         if (data.complemento) formulario.sub_address = data.complemento
         if (data.localidade) formulario.city = data.localidade
+        if (data.uf) formulario.state_initials = data.uf
         if (data.uf) formulario.state = data.uf
       }
     }

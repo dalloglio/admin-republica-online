@@ -1,5 +1,5 @@
 <template>
-  <div class="categories edit">
+  <div v-if="form.id" class="categories edit">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ name: 'home' }">Home</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'categories.index' }">Categorias</el-breadcrumb-item>
@@ -32,7 +32,7 @@
         <el-form-item label="Ativo">
           <el-switch v-model="form.status" on-color="#13ce66" off-color="#ff4949" :on-value="true" :off-value="false" on-text="Sim" off-text="Não"></el-switch>
         </el-form-item>
-        <el-button type="success" @click="save">Salvar</el-button>
+        <el-button type="success" @click="save" :loading="saving">Salvar</el-button>
       </el-form>
     </el-card>
   </div>
@@ -43,6 +43,7 @@ export default {
   'name': 'categories-edit',
   data () {
     return {
+      saving: false,
       filtersSelected: [],
       filterMethod (query, item) {
         return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1
@@ -51,16 +52,19 @@ export default {
   },
   methods: {
     save () {
+      this.saving = true
       this.form.filters = this.filtersSelected
       let params = {
         id: this.$route.params.id,
         data: this.form
       }
       this.$store.dispatch('updateCategory', params).then((response) => {
+        this.saving = false
         if (response.ok) {
           this.$router.push({ name: 'categories.index' })
         }
       }, (error) => {
+        this.saving = false
         console.log(error)
         this.$message({
           showClose: true,
@@ -100,6 +104,9 @@ export default {
       }
     })
     this.$store.dispatch('getFilters')
+  },
+  beforeDestroy () {
+    this.$store.commit('setCategory', {})
   }
 }
 </script>

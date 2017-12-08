@@ -54,7 +54,7 @@
             <div slot="tip" class="el-upload__tip">Arquivos JPEG, PNG ou GIF com um tamanho de até 2MB.</div>
           </el-upload>
         </el-form-item>
-        <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
+        <el-button type="success" @click="save" :loading="saving">Salvar</el-button>
       </el-form>
     </el-card>
   </div>

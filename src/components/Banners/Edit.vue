@@ -97,7 +97,6 @@ export default {
         data: this.form
       }
       this.$store.dispatch('updateBanner', params).then((response) => {
-        this.saving = false
         if (response.ok) {
           if (this.file) {
             let photoData = new FormData()
@@ -107,15 +106,20 @@ export default {
               data: photoData
             }
             this.$store.dispatch('createBannerPhoto', params).then((response) => {
+              this.saving = false
               if (response.ok) {
                 this.$router.push({ name: 'banners.index' })
               }
             }, (error) => {
+              this.saving = false
               console.log(error)
             })
           } else {
+            this.saving = false
             this.$router.push({ name: 'banners.index' })
           }
+        } else {
+          this.saving = false
         }
       }, (error) => {
         this.saving = false

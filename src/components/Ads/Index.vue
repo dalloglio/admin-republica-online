@@ -69,6 +69,9 @@ export default {
   },
   created () {
     this.$store.dispatch('getAds')
+  },
+  beforeDestroy () {
+    this.$store.commit('setAds', [])
   }
 }
 </script>

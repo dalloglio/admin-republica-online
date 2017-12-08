@@ -68,6 +68,9 @@ export default {
   },
   created () {
     this.$store.dispatch('getCategories')
+  },
+  beforeDestroy () {
+    this.$store.commit('setCategories', [])
   }
 }
 </script>

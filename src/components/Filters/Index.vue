@@ -69,6 +69,9 @@ export default {
   },
   created () {
     this.$store.dispatch('getFilters')
+  },
+  beforeDestroy () {
+    this.$store.commit('setFilters', [])
   }
 }
 </script>

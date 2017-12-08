@@ -60,11 +60,14 @@ export default {
   },
   computed: {
     partners () {
-      return this.$store.state.partner.partners.data
+      return this.$store.state.partner.partners.data || []
     }
   },
   created () {
     this.$store.dispatch('getPartners')
+  },
+  beforeDestroy () {
+    this.$store.commit('setPartners', [])
   }
 }
 </script>

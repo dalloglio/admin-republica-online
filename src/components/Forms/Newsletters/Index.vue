@@ -1,5 +1,5 @@
 <template>
-  <div class="newsletters index">
+  <div v-if="form.id" class="newsletters index">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: 'home' }">Home</el-breadcrumb-item>
       <el-breadcrumb-item>{{ form.title }}</el-breadcrumb-item>
@@ -62,11 +62,14 @@ export default {
       return this.$store.state.form.form
     },
     contacts () {
-      return this.$store.state.form.form.contacts
+      return this.form.contacts
     }
   },
   created () {
     this.getForm()
+  },
+  beforeDestroy () {
+    this.$store.commit('setForm', {})
   }
 }
 </script>

@@ -44,7 +44,6 @@ export default {
   data () {
     return {
       files: this.dataFiles,
-      fileList: this.dataFiles,
       filesToUpload: 0
     }
   },
@@ -60,43 +59,41 @@ export default {
       }
 
       Array.from(fileList).forEach((file) => {
-        this.filesToUpload++
         file.url = window.URL.createObjectURL(file)
-        this.fileList.push(file)
+        this.dataFiles.push(file)
+        this.filesToUpload++
       })
 
-      if (this.fileList.length > this.maxFiles) {
+      if (this.dataFiles.length > this.maxFiles) {
         this.$message.error('Você só pode enviar até ' + this.maxFiles + ' arquivos.')
       }
 
-      this.files = this.fileList.slice(0, this.maxFiles)
-      this.fileList = this.files
+      this.dataFiles.slice(0, this.maxFiles)
     },
     removeFile (file, index) {
-      if (this.files[index]) {
+      if (this.dataFiles[index]) {
         if (file.id > 0) {
           this.$store.dispatch('deletePhoto', file.id).then((response) => {
-            this.files.splice(index, 1)
+            this.dataFiles.splice(index, 1)
             this.$emit('upload-remove')
           }, (error) => {
             console.log(error)
             this.$message.error('Não foi possível excluir o arquivo.')
           })
         } else {
-          this.files.splice(index, 1)
+          this.dataFiles.splice(index, 1)
         }
       }
     },
-    uploadStart () {
-      if (this.filesToUpload > 0) {
-        let self = this
+    uploadStart (destroy = false) {
+      if (destroy) {
+        return
+      }
+      let self = this
+      if (self.filesToUpload > 0) {
         let total = 0
-        self.files.forEach((file, index) => {
-          if (file.id > 0) {
-            self.files = []
-            self.fileList = []
-            self.$emit('upload-complete')
-          } else {
+        self.dataFiles.forEach((file, index) => {
+          if (file instanceof File) {
             let formData = new FormData()
             formData.append(self.params.input, file, file.name)
             let params = {
@@ -106,9 +103,8 @@ export default {
             self.$store.dispatch(self.params.action, params).then((response) => {
               if (response.ok) {
                 total++
-                if (total === this.filesToUpload) {
-                  self.files = []
-                  self.fileList = []
+                if (total === self.filesToUpload) {
+                  self.dataFiles.splice(0)
                   self.$emit('upload-complete')
                 }
               }
@@ -119,14 +115,19 @@ export default {
           }
         })
       } else {
-        this.files = []
-        this.fileList = []
-        this.$emit('upload-complete')
+        this.uploadComplete()
       }
+    },
+    uploadComplete () {
+      this.dataFiles.splice(0)
+      this.$emit('upload-complete')
     }
   },
   created () {
     window.events.$on('upload-start', () => this.uploadStart())
+  },
+  beforeDestroy () {
+    window.events.$off('upload-start', () => this.uploadStart(true))
   }
 }
 </script>

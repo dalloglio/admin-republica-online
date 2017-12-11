@@ -1,5 +1,5 @@
 <template>
-  <div class="ads edit">
+  <div v-if="form.id" class="ads edit">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ name: 'home' }">Home</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'ads.index' }">Anúncios</el-breadcrumb-item>
@@ -219,7 +219,7 @@ export default {
       return ad
     },
     files () {
-      let photos = this.$store.state.ad.ad.photos || []
+      let photos = this.form.photos || []
       let files = []
       photos.forEach((file, index) => {
         files.push({

@@ -23,7 +23,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="Categoria">
-          <el-select v-model="form.category_id" placeholder="Escolha uma categoria" @change="getCategory">
+          <el-select v-model="form.category_id" placeholder="Escolha uma categoria">
             <el-option v-for="category in categories" :key="category.id" :label="category.title" :value="category.id"></el-option>
           </el-select>
         </el-form-item>
@@ -128,7 +128,6 @@ export default {
       users: [],
       loading: false,
       saving: false,
-      filters: [],
       form: {
         title: '',
         description: '',
@@ -165,16 +164,8 @@ export default {
   },
   methods: {
     getCategory () {
-      this.filters = []
-      this.form.details = []
       if (this.form.category_id) {
-        this.$store.dispatch('getCategory', this.form.category_id).then((response) => {
-          if (response.ok) {
-            if (response.body.filters) {
-              this.filters = response.body.filters
-            }
-          }
-        })
+        this.$store.dispatch('getCategory', this.form.category_id)
       }
     },
     save () {
@@ -224,6 +215,11 @@ export default {
       this.$router.push({ name: 'ads.index' })
     }
   },
+  watch: {
+    'form.category_id' (newValue) {
+      this.getCategory()
+    }
+  },
   computed: {
     categories () {
       let categories = this.$store.state.category.categories
@@ -232,6 +228,9 @@ export default {
         data = categories.data
       }
       return data
+    },
+    filters () {
+      return this.$store.state.category.category.filters || []
     }
   },
   created () {

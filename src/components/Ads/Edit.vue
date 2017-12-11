@@ -23,7 +23,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="Categoria">
-          <el-select v-model="form.category_id" placeholder="Escolha uma categoria" @change="getCategory">
+          <el-select v-model="form.category_id" placeholder="Escolha uma categoria">
             <el-option v-for="category in categories" :key="category.id" :label="category.title" :value="category.id"></el-option>
           </el-select>
         </el-form-item>
@@ -191,6 +191,11 @@ export default {
     uploadRemove () {},
     uploadComplete () {
       this.$router.push({ name: 'ads.index' })
+    }
+  },
+  watch: {
+    'form.category_id' (newValue) {
+      this.getCategory()
     }
   },
   computed: {

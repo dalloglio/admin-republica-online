@@ -64,8 +64,13 @@ export default {
       return this.$store.state.banner.banners.data
     }
   },
+  beforeCreate () {
+    this.$loader.open()
+  },
   created () {
-    this.$store.dispatch('getBanners')
+    this.$store.dispatch('getBanners').then(() => {
+      this.$loader.close()
+    })
   },
   beforeDestroy () {
     this.$store.commit('setBanners', [])

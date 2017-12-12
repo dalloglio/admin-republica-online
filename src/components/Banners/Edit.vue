@@ -182,8 +182,13 @@ export default {
       return url
     }
   },
+  beforeCreate () {
+    this.$loader.open()
+  },
   created () {
-    this.$store.dispatch('getBanner', this.$route.params.id)
+    this.$store.dispatch('getBanner', this.$route.params.id).then(() => {
+      this.$loader.close()
+    })
   },
   beforeDestroy () {
     this.$store.commit('setBanner', {})

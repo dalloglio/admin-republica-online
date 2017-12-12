@@ -67,8 +67,13 @@ export default {
       return this.$store.state.user.users.data
     }
   },
+  beforeCreate () {
+    this.$loader.open()
+  },
   created () {
-    this.$store.dispatch('getUsers')
+    this.$store.dispatch('getUsers').then(() => {
+      this.$loader.close()
+    })
   },
   beforeDestroy () {
     this.$store.commit('setUsers', [])

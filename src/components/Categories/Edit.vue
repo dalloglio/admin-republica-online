@@ -92,6 +92,9 @@ export default {
       return data
     }
   },
+  beforeCreate () {
+    this.$loader.open()
+  },
   created () {
     this.$store.dispatch('getCategory', this.$route.params.id).then((response) => {
       let filters = response.body.filters
@@ -102,8 +105,11 @@ export default {
           }
         })
       }
+
+      this.$store.dispatch('getFilters').then(() => {
+        this.$loader.close()
+      })
     })
-    this.$store.dispatch('getFilters')
   },
   beforeDestroy () {
     this.$store.commit('setCategory', {})

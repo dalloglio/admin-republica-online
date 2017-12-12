@@ -66,8 +66,13 @@ export default {
       return this.$store.state.category.categories.data
     }
   },
+  beforeCreate () {
+    this.$loader.open()
+  },
   created () {
-    this.$store.dispatch('getCategories')
+    this.$store.dispatch('getCategories').then(() => {
+      this.$loader.close()
+    })
   },
   beforeDestroy () {
     this.$store.commit('setCategories', [])

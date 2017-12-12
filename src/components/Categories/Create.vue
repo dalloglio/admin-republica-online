@@ -55,8 +55,13 @@ export default {
       }
     }
   },
+  beforeCreate () {
+    this.$loader.open()
+  },
   created () {
-    this.$store.dispatch('getFilters')
+    this.$store.dispatch('getFilters').then(() => {
+      this.$loader.close()
+    })
   },
   computed: {
     filters () {

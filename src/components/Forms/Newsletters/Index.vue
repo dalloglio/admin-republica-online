@@ -54,7 +54,9 @@ export default {
       })
     },
     getForm () {
-      this.$store.dispatch('getForm', this.form_id)
+      this.$store.dispatch('getForm', this.form_id).then(() => {
+        this.$loader.close()
+      })
     }
   },
   computed: {
@@ -64,6 +66,9 @@ export default {
     contacts () {
       return this.form.contacts
     }
+  },
+  beforeCreate () {
+    this.$loader.open()
   },
   created () {
     this.getForm()

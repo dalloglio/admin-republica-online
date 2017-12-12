@@ -59,7 +59,9 @@ export default {
         form_id: this.form_id,
         id: this.$route.params.id
       }
-      this.$store.dispatch('getFormContact', params)
+      this.$store.dispatch('getFormContact', params).then(() => {
+        this.$loader.close()
+      })
     }
   },
   computed: {
@@ -69,6 +71,9 @@ export default {
     contact () {
       return this.$store.state.form.contact || {}
     }
+  },
+  beforeCreate () {
+    this.$loader.open()
   },
   created () {
     this.getFormContact()

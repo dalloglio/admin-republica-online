@@ -67,8 +67,13 @@ export default {
       return this.$store.state.filter.filters.data
     }
   },
+  beforeCreate () {
+    this.$loader.open()
+  },
   created () {
-    this.$store.dispatch('getFilters')
+    this.$store.dispatch('getFilters').then(() => {
+      this.$loader.close()
+    })
   },
   beforeDestroy () {
     this.$store.commit('setFilters', [])

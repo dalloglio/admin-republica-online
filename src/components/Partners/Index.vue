@@ -63,8 +63,13 @@ export default {
       return this.$store.state.partner.partners.data || []
     }
   },
+  beforeCreate () {
+    this.$loader.open()
+  },
   created () {
-    this.$store.dispatch('getPartners')
+    this.$store.dispatch('getPartners').then(() => {
+      this.$loader.close()
+    })
   },
   beforeDestroy () {
     this.$store.commit('setPartners', [])

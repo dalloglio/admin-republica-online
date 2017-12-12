@@ -67,8 +67,13 @@ export default {
       return this.$store.state.ad.ads.data
     }
   },
+  beforeCreate () {
+    this.$loader.open()
+  },
   created () {
-    this.$store.dispatch('getAds')
+    this.$store.dispatch('getAds').then(() => {
+      this.$loader.close()
+    })
   },
   beforeDestroy () {
     this.$store.commit('setAds', [])

@@ -247,9 +247,15 @@ export default {
       return this.$store.state.category.category.filters || []
     }
   },
+  beforeCreate () {
+    this.$loader.open()
+  },
   created () {
-    this.$store.dispatch('getAd', this.$route.params.id)
-    this.$store.dispatch('getCategories')
+    this.$store.dispatch('getAd', this.$route.params.id).then(() => {
+      this.$store.dispatch('getCategories').then(() => {
+        this.$loader.close()
+      })
+    })
   },
   beforeDestroy () {
     this.$store.commit('setAd', {})

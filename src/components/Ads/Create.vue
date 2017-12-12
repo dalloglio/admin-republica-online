@@ -233,8 +233,13 @@ export default {
       return this.$store.state.category.category.filters || []
     }
   },
+  beforeCreate () {
+    this.$loader.open()
+  },
   created () {
-    this.$store.dispatch('getCategories')
+    this.$store.dispatch('getCategories').then(() => {
+      this.$loader.close()
+    })
   }
 }
 </script>

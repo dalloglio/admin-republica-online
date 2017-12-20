@@ -3,7 +3,6 @@
     <h2>Fotos</h2>
     <app-upload
     :data-files="files"
-    :params="params"
     :max-files="maxFiles"
     @upload-remove="uploadRemove"
     @upload-complete="uploadComplete"></app-upload>
@@ -26,12 +25,7 @@
     data () {
       return {
         files: [],
-        maxFiles: 8,
-        params: {
-          id: 0,
-          input: 'photo',
-          action: 'createAdPhoto'
-        }
+        maxFiles: 8
       }
     },
     methods: {

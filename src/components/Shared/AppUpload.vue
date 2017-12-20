@@ -28,10 +28,6 @@ export default {
       type: Array,
       default: []
     },
-    params: {
-      type: Object,
-      default: {}
-    },
     maxFiles: {
       type: Number,
       default: 10
@@ -85,7 +81,7 @@ export default {
         }
       }
     },
-    uploadStart (destroy = false) {
+    uploadStart (destroy = false, params = {}) {
       if (destroy) {
         return
       }
@@ -95,12 +91,12 @@ export default {
         self.dataFiles.forEach((file, index) => {
           if (file instanceof File) {
             let formData = new FormData()
-            formData.append(self.params.input, file, file.name)
-            let params = {
-              id: self.params.id,
+            formData.append(params.input, file, file.name)
+            let data = {
+              id: params.id,
               data: formData
             }
-            self.$store.dispatch(self.params.action, params).then((response) => {
+            self.$store.dispatch(params.action, data).then((response) => {
               if (response.ok) {
                 total++
                 if (total === self.filesToUpload) {
@@ -124,7 +120,7 @@ export default {
     }
   },
   created () {
-    window.events.$on('upload-start', () => this.uploadStart())
+    window.events.$on('upload-start', (params) => this.uploadStart(false, params))
   },
   beforeDestroy () {
     window.events.$off('upload-start', () => this.uploadStart(true))

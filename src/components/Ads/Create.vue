@@ -58,8 +58,11 @@
             this.saving = true
             this.$store.dispatch('createAd', this.form).then((response) => {
               if (response.ok) {
-                this.params.id = response.body.id
-                window.events.$emit('upload-start')
+                window.events.$emit('upload-start', {
+                  id: response.body.id,
+                  input: 'photo',
+                  action: 'createAdPhoto'
+                })
               } else {
                 this.saving = false
               }

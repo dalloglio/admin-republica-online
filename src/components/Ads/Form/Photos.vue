@@ -24,8 +24,21 @@
     },
     data () {
       return {
-        files: [],
         maxFiles: 8
+      }
+    },
+    computed: {
+      files () {
+        let photos = this.model.photos || []
+        let files = []
+        photos.forEach((file, index) => {
+          files.push({
+            id: file.id,
+            name: file.name,
+            url: this.$store.getters.urlPhoto(file.id)
+          })
+        })
+        return files
       }
     },
     methods: {

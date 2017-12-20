@@ -71,7 +71,7 @@ export default {
         if (file.id > 0) {
           this.$store.dispatch('deletePhoto', file.id).then((response) => {
             this.dataFiles.splice(index, 1)
-            this.$emit('upload-remove')
+            this.$emit('upload-remove', file)
           }, (error) => {
             console.log(error)
             this.$message.error('Não foi possível excluir o arquivo.')

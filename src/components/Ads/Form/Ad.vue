@@ -73,8 +73,11 @@
             this.loading = false
             if (response.body.data) {
               this.users = response.body.data.filter(user => {
-                let q = query.toString()
-                return user.name.toLowerCase().indexOf(q.toLowerCase()) > -1
+                if (user.id === query) {
+                  return user.name.toLowerCase().indexOf(user.name.toLowerCase()) > -1
+                } else {
+                  return user.name.toLowerCase().indexOf(query.toString().toLowerCase()) > -1
+                }
               })
             }
           })

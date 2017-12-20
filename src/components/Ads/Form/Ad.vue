@@ -21,7 +21,7 @@
     </el-form-item>
 
     <el-form-item label="Preço" prop="price">
-      <el-input v-model="model.price" type="text" placeholder="Informe o preço" :minlength="1" :maxlength="10"></el-input>
+      <el-input v-model.lazy="model.price" type="text" placeholder="Informe o preço" :minlength="1" :maxlength="13" v-money="money"></el-input>
     </el-form-item>
 
     <el-form-item label="Ativo" prop="status">
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+  import { VMoney } from 'v-money'
   export default {
     name: 'ads-form-ad',
     props: {
@@ -39,10 +40,19 @@
         required: true
       }
     },
+    directives: { money: VMoney },
     data () {
       return {
         loading: false,
-        users: []
+        users: [],
+        money: {
+          decimal: ',',
+          thousands: '.',
+          prefix: '',
+          suffix: '',
+          precision: 2,
+          masked: true
+        }
       }
     },
     watch: {

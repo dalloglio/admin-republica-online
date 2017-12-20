@@ -17,7 +17,8 @@ const rulesForm = {
       { min: 10, max: 500, message: 'A descrição deve ter de 10 até 500 caracteres' }
     ],
     price: [
-      { required: true, message: 'O preço é obrigatório' }
+      { required: true, message: 'O preço é obrigatório' },
+      { max: 13, message: 'O preço deve ter até 13 caracteres' }
     ],
     status: [
       { required: true, message: 'O status é obrigatório' }

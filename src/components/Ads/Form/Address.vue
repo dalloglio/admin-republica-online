@@ -2,7 +2,7 @@
   <el-card class="box-card">
     <h2>Endereço</h2>
     <el-form-item label="Cep" prop="address.zip_code">
-      <el-input v-model="model.address.zip_code" type="text" placeholder="Informe o cep" :minlength="9" :maxlength="9" @blur="pesquisarCep"></el-input>
+      <el-input v-model="model.address.zip_code" type="text" placeholder="Informe o cep" :minlength="9" :maxlength="9" @blur="pesquisarCep" v-mask="'#####-###'"></el-input>
     </el-form-item>
     <el-form-item label="Estado" prop="address.state_initials">
       <el-input v-model="model.address.state_initials" type="text" placeholder="Informe o estado" :minlength="2" :maxlength="2"></el-input>
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+  import { mask } from 'vue-the-mask'
   import Address from '@/utils/domains/address'
   export default {
     name: 'ads-form-address',
@@ -40,6 +41,7 @@
         required: true
       }
     },
+    directives: { mask },
     data () {
       return {
         showMapOptions: Address.showMapOptions()

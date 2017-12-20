@@ -16,239 +16,76 @@
     <el-alert :closable="false" title="Atenção" description="Todos os campos devem ser preenchidos." type="warning" show-icon></el-alert>
 
     <el-form ref="form" label-position="top" :model="form" :rules="rules">
-      <el-card class="box-card">
-        <el-form-item label="Usuário" prop="user_id">
-          <el-select v-model.number="form.user_id" filterable remote placeholder="Digite algo para buscar um usuário" :remote-method="remoteUsers" :loading="loading">
-            <el-option v-for="user in users" :key="user.id" :label="user.name" :value="user.id"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Categoria" prop="category_id">
-          <el-select v-model.number="form.category_id" placeholder="Escolha uma categoria">
-            <el-option v-for="category in categories" :key="category.id" :label="category.title" :value="category.id"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Título" prop="title">
-          <el-input v-model="form.title" type="text" placeholder="Informe o título" :minlength="10" :maxlength="200"></el-input>
-        </el-form-item>
-        <el-form-item label="Descrição" prop="description">
-          <el-input v-model="form.description" type="textarea" placeholder="Informe uma descrição" :minlength="10" :maxlength="500" :rows="4"></el-input>
-        </el-form-item>
-        <el-form-item label="Preço" prop="price">
-          <el-input v-model="form.price" type="text" placeholder="Informe o preço" :minlength="1" :maxlength="10"></el-input>
-        </el-form-item>
-        <el-form-item label="Ativo" prop="status">
-          <el-switch v-model="form.status" on-color="#13ce66" off-color="#ff4949" :on-value="true" :off-value="false" on-text="Sim" off-text="Não"></el-switch>
-        </el-form-item>
-      </el-card>
-
-      <div v-if="filters.length" id="filters">
-        <el-card class="box-card">
-          <h2>Filtros</h2>
-          <el-row :gutter="20">
-            <el-col :xs="6" :sm="6" :md="6" :lg="6" v-for="(filter, index) in filters" :key="filter.id">
-              <el-form-item :label="filter.title">
-                <el-select v-model="form.details[index]" :placeholder="filter.description">
-                  <el-option v-for="input in filter.inputs" :key="input.id" :label="input.value" :value="input.id"></el-option>
-                </el-select>
-            </el-form-item>
-            </el-col>
-          </el-row>
-        </el-card>
-      </div>
-
-      <el-card class="box-card">
-        <h2>Endereço</h2>
-        <el-form-item label="Cep" prop="address.zip_code">
-          <el-input v-model="form.address.zip_code" type="text" placeholder="Informe o cep" :minlength="9" :maxlength="9" @blur="pesquisarCep"></el-input>
-        </el-form-item>
-        <el-form-item label="Estado" prop="address.state_initials">
-          <el-input v-model="form.address.state_initials" type="text" placeholder="Informe o estado" :minlength="2" :maxlength="2"></el-input>
-        </el-form-item>
-        <el-form-item label="Cidade" prop="address.city">
-          <el-input v-model="form.address.city" type="text" placeholder="Informe a cidade" :minlength="1" :maxlength="200"></el-input>
-        </el-form-item>
-        <el-form-item label="Bairro" prop="address.neighborhood">
-          <el-input v-model="form.address.neighborhood" type="text" placeholder="Informe o bairro" :minlength="1" :maxlength="200"></el-input>
-        </el-form-item>
-        <el-form-item label="Rua" prop="address.street">
-          <el-input v-model="form.address.street" type="text" placeholder="Informe a rua" :minlength="1" :maxlength="200"></el-input>
-        </el-form-item>
-        <el-form-item label="Número" prop="address.number">
-          <el-input v-model="form.address.number" type="text" placeholder="Informe o número" :minlength="1" :maxlength="20"></el-input>
-        </el-form-item>
-        <el-form-item label="Complemento" prop="address.sub_address">
-          <el-input v-model="form.address.sub_address" type="text" placeholder="Informe o complemento" :minlength="1" :maxlength="200"></el-input>
-        </el-form-item>
-        <el-form-item label="No mapa" prop="address.show_on_map">
-          <el-radio-group v-model="form.address.show_on_map">
-            <el-radio v-for="option in showOnMapOptions" :key="option.key" :label="option.key">{{ option.value }}</el-radio>
-          </el-radio-group>
-        </el-form-item>
-      </el-card>
-
-      <el-card class="box-card">
-        <h2>Fotos</h2>
-        <app-upload :data-files="files" :params="params" :max-files="maxFiles" @upload-remove="uploadRemove" @upload-complete="uploadComplete"></app-upload>
-      </el-card>
-
-      <el-card class="box-card">
-        <h2>Contatos</h2>
-        <el-form-item label="Nome" prop="contact.name">
-          <el-input v-model="form.contact.name" type="text" placeholder="Informe o nome" :minlength="1" :maxlength="200"></el-input>
-        </el-form-item>
-        <el-form-item label="Celular" prop="contact.cellphone">
-          <el-input v-model="form.contact.cellphone" type="text" placeholder="Informe o celular" :minlength="15" :maxlength="15"></el-input>
-        </el-form-item>
-        <el-form-item label="WhatsApp" prop="contact.whatsapp">
-          <el-input v-model="form.contact.whatsapp" type="text" placeholder="Informe o whatsapp" :minlength="15" :maxlength="15"></el-input>
-        </el-form-item>
-      </el-card>
-
+      <ads-form-ad :model="form"></ads-form-ad>
+      <ads-form-filters :model="form"></ads-form-filters>
+      <ads-form-address :model="form"></ads-form-address>
+      <ads-form-photos :model="form"></ads-form-photos>
+      <ads-form-contact :model="form"></ads-form-contact>
       <el-button type="success" @click="save" :loading="saving">Salvar</el-button>
     </el-form>
+
   </div>
 </template>
 
 <script>
-import AppUpload from '@/components/Shared/AppUpload'
-import rulesForm from '@/utils/rules/form'
-export default {
-  'name': 'ads-create',
-  components: {
-    AppUpload
-  },
-  data () {
-    return {
-      files: [],
-      maxFiles: 8,
-      params: {
-        id: 0,
-        input: 'photo',
-        action: 'createAdPhoto'
-      },
-      users: [],
-      loading: false,
-      saving: false,
-      form: {
-        title: '',
-        description: '',
-        content: '',
-        price: '',
-        status: '',
-        category_id: '',
-        user_id: '',
-        details: [],
-        contact: {
-          name: '',
-          cellphone: '',
-          whatsapp: ''
-        },
-        address: {
-          zip_code: '',
-          street: '',
-          number: '',
-          sub_address: '',
-          neighborhood: '',
-          country: 'Brasil',
-          state: 'SC',
-          state_initials: '',
-          city: '',
-          show_on_map: 'default'
-        }
-      },
-      rules: rulesForm.Ad,
-      showOnMapOptions: [
-        { key: 'default', value: 'Não mostrar' },
-        { key: 'approximate', value: 'Mostrar a localização aproximada' },
-        { key: 'exact', value: 'Mostrar a localização exata' }
-      ]
-    }
-  },
-  methods: {
-    getCategory () {
-      if (this.form.category_id) {
-        this.$store.dispatch('getCategory', this.form.category_id)
+  import AdsFormAd from '@/components/Ads/Form/Ad'
+  import AdsFormFilters from '@/components/Ads/Form/Filters'
+  import AdsFormAddress from '@/components/Ads/Form/Address'
+  import AdsFormPhotos from '@/components/Ads/Form/Photos'
+  import AdsFormContact from '@/components/Ads/Form/Contact'
+  import Ad from '@/utils/domains/ad'
+  import rulesForm from '@/utils/rules/form'
+  export default {
+    'name': 'ads-create',
+    components: {
+      AdsFormAd,
+      AdsFormFilters,
+      AdsFormAddress,
+      AdsFormPhotos,
+      AdsFormContact
+    },
+    data () {
+      return {
+        saving: false,
+        form: new Ad(),
+        rules: rulesForm.Ad
       }
     },
-    save () {
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          this.saving = true
-          this.$store.dispatch('createAd', this.form).then((response) => {
-            if (response.ok) {
-              this.params.id = response.body.id
-              window.events.$emit('upload-start')
-            } else {
+    methods: {
+      save () {
+        this.$refs.form.validate((valid) => {
+          if (valid) {
+            this.saving = true
+            this.$store.dispatch('createAd', this.form).then((response) => {
+              if (response.ok) {
+                this.params.id = response.body.id
+                window.events.$emit('upload-start')
+              } else {
+                this.saving = false
+              }
+            }, (error) => {
               this.saving = false
-            }
-          }, (error) => {
-            this.saving = false
-            console.log(error)
-            this.$message({
-              showClose: true,
-              message: 'Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.',
-              type: 'error'
+              console.log(error)
+              this.$message({
+                showClose: true,
+                message: 'Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.',
+                type: 'error'
+              })
             })
-          })
-        } else {
-          this.$message.warning('Ops, preencha corretamente o formulário!')
-          return false
-        }
-      })
-    },
-    remoteUsers (query) {
-      if (query !== '') {
-        this.loading = true
-        this.$store.dispatch('getUsers').then((response) => {
-          this.loading = false
-          if (response.body.data) {
-            this.users = response.body.data.filter(user => {
-              let q = query.toString()
-              return user.name.toLowerCase().indexOf(q.toLowerCase()) > -1
-            })
+          } else {
+            this.$message.warning('Ops, preencha corretamente o formulário!')
+            return false
           }
         })
-      } else {
-        this.users = []
       }
     },
-    pesquisarCep () {
-      if (this.form.address.zip_code !== '') {
-        this.cep.pesquisar(this.form.address.zip_code, this.form.address)
-      }
+    beforeCreate () {
+      this.$loader.open()
     },
-    uploadRemove (file) {
-      this.$message.success('O arquivo ' + file.name + ' foi removido com sucesso...')
-    },
-    uploadComplete () {
-      this.$router.push({ name: 'ads.index' })
+    created () {
+      this.$store.dispatch('getCategories').then(() => {
+        this.$loader.close()
+      })
     }
-  },
-  watch: {
-    'form.category_id' (newValue) {
-      this.getCategory()
-    }
-  },
-  computed: {
-    categories () {
-      let categories = this.$store.state.category.categories
-      let data = []
-      if (categories.data) {
-        data = categories.data
-      }
-      return data
-    },
-    filters () {
-      return this.$store.state.category.category.filters || []
-    }
-  },
-  beforeCreate () {
-    this.$loader.open()
-  },
-  created () {
-    this.$store.dispatch('getCategories').then(() => {
-      this.$loader.close()
-    })
   }
-}
 </script>

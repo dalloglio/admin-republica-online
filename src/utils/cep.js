@@ -6,21 +6,29 @@ export default {
     Vue.cep = {
 
       pesquisar (cep, formulario) {
-        cep = cep.replace(/\D/g, '')
+        return new Promise((resolve, reject) => {
+          cep = cep.replace(/\D/g, '')
 
-        if (!cep) return
-        if (cep.length !== 8) return
-
-        let url = ENDPOINT.replace(xxxxxxxx, cep)
-
-        Vue.http.get(url, {
-          before: function (request) {
-            delete request.headers.map.Authorization
+          if (!cep || cep.length !== 8) {
+            reject(false)
           }
-        }).then((response) => {
-          if (response.body.status === 400) return
-          if (response.body.erro === true) return
-          this.completarFormulario(formulario, response.body)
+
+          let url = ENDPOINT.replace(xxxxxxxx, cep)
+
+          Vue.http.get(url, {
+            before: function (request) {
+              delete request.headers.map.Authorization
+            }
+          }).then((response) => {
+            if (
+              response.body.status === 400 ||
+              response.body.erro === true
+            ) {
+              reject(false)
+            }
+            this.completarFormulario(formulario, response.body)
+            resolve(response)
+          }, error => reject(error))
         })
       },
 

@@ -45,7 +45,7 @@
             this.saving = true
             this.$store.dispatch('createBanner', this.form).then((response) => {
               if (response.ok) {
-                if (this.form.photo) {
+                if (this.form.photo instanceof File) {
                   let photoData = new FormData()
                   photoData.append('photo', this.form.photo)
                   let params = {

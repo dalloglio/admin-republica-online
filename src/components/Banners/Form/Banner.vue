@@ -29,6 +29,7 @@
         :data="upload.data"
         :name="upload.name"
         :action="upload.action"
+        :file-list="fileList"
         :list-type="upload.list_type"
         :show-file-list="upload.show_file_list"
         :multiple="upload.multiple"
@@ -71,7 +72,24 @@
     },
     computed: {
       file () {
-        return this.model.photo || {}
+        return this.model.photo || {
+          id: null,
+          name: null
+        }
+      },
+      fileList () {
+        return [{
+          name: this.file.name || '',
+          url: this.photoUrl || ''
+        }]
+      },
+      photoUrl () {
+        let url = ''
+        if (this.file.id > 0) {
+          url = this.$store.getters.urlPhoto(this.file.id)
+        }
+        this.imageUrl = url
+        return url
       }
     },
     methods: {

@@ -51,10 +51,11 @@
         }
         let ad = this.$store.getters.getAdById(id)
         if (Number.isInteger(ad.id)) {
-          this.$store.dispatch('deleteAd', ad.id).then((response) => {
-            if (response.ok) {
-              this.$store.dispatch('getAds')
-            }
+          this.$loader.open()
+          this.$store.dispatch('deleteAd', ad.id).then(() => {
+            this.$store.dispatch('getAds').then(() => {
+              this.$loader.close()
+            })
           }, (error) => {
             console.log(error)
           })

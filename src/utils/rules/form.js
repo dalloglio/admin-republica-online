@@ -65,6 +65,21 @@ const rulesForm = {
       { required: true, message: 'O WhatApp é obrigatório' },
       { min: 15, max: 15, message: 'O WhatApp deve ter 15 caracteres' }
     ]
+  },
+  Banner: {
+    title: [
+      { required: true, message: 'O título é obrigatório' },
+      { min: 3, max: 200, message: 'O título deve ter de 3 até 200 caracteres' }
+    ],
+    description: [
+      { min: 3, max: 200, message: 'A descrição deve ter de 3 até 200 caracteres' }
+    ],
+    link: [
+      { min: 3, max: 200, message: 'O link deve ter de 3 até 200 caracteres' }
+    ],
+    size: [
+      { required: true, message: 'O tamanho é obrigatório' }
+    ]
   }
 }
 

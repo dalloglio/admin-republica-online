@@ -18,7 +18,7 @@ export default {
       close () {
         setTimeout(() => {
           this.instance.close()
-        }, 500)
+        }, 300)
       }
     }
 

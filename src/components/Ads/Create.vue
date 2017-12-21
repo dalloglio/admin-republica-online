@@ -13,7 +13,7 @@
       </el-button-group>
     </h1>
 
-    <el-alert :closable="false" title="Atenção" description="Todos os campos devem ser preenchidos." type="warning" show-icon></el-alert>
+    <el-alert :closable="false" title="Atenção" description="Os campos com * devem ser preenchidos." type="warning" show-icon></el-alert>
 
     <el-form ref="form" label-position="top" :model="form" :rules="rules">
       <ads-form-ad :model="form"></ads-form-ad>

@@ -46,6 +46,9 @@
     },
     created () {
       this.getCategory()
+    },
+    beforeDestroy () {
+      this.$store.commit('setCategory', {})
     }
   }
 </script>

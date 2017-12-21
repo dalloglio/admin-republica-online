@@ -55,11 +55,6 @@
         }
       }
     },
-    watch: {
-      'model.category_id' (newValue) {
-        this.getCategory()
-      }
-    },
     computed: {
       categories () {
         let categories = this.$store.state.category.categories
@@ -71,11 +66,6 @@
       }
     },
     methods: {
-      getCategory () {
-        if (this.model.category_id) {
-          this.$store.dispatch('getCategory', this.model.category_id)
-        }
-      },
       remoteUsers (query) {
         if (query !== '') {
           this.loading = true

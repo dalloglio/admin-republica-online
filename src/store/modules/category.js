@@ -32,8 +32,11 @@ export default {
 
   actions: {
     getCategories ({ commit }) {
-      Vue.http.get(ENDPOINT).then((response) => {
-        commit('setCategories', response.body)
+      return new Promise((resolve, reject) => {
+        Vue.http.get(ENDPOINT).then((response) => {
+          commit('setCategories', response.body)
+          resolve(response)
+        }, error => reject(error))
       })
     },
 
@@ -42,9 +45,7 @@ export default {
         Vue.http.get(ENDPOINT + '/' + id).then((response) => {
           commit('setCategory', response.body)
           resolve(response)
-        }, (error) => {
-          reject(error)
-        })
+        }, error => reject(error))
       })
     },
 

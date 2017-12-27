@@ -1,4 +1,5 @@
 import Model from './model'
+import Photo from './photo'
 
 class Banner extends Model {
   constructor (data = {
@@ -6,7 +7,7 @@ class Banner extends Model {
     description: '',
     link: '',
     size: '',
-    photo: {}
+    photo: new Photo()
   }) {
     super(data)
   }

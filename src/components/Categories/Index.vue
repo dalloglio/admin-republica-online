@@ -51,14 +51,20 @@ export default {
       }
       let category = this.$store.getters.getCategoryById(id)
       if (Number.isInteger(category.id)) {
+        this.$loader.open()
         this.$store.dispatch('deleteCategory', category.id).then((response) => {
           if (response.ok) {
-            this.$store.dispatch('getCategories')
+            this.getCategories()
           }
         }, (error) => {
           console.log(error)
         })
       }
+    },
+    getCategories () {
+      this.$store.dispatch('getCategories').then(() => {
+        this.$loader.close()
+      })
     }
   },
   computed: {
@@ -70,9 +76,7 @@ export default {
     this.$loader.open()
   },
   created () {
-    this.$store.dispatch('getCategories').then(() => {
-      this.$loader.close()
-    })
+    this.getCategories()
   },
   beforeDestroy () {
     this.$store.commit('setCategories', [])

@@ -49,14 +49,20 @@ export default {
       }
       let banner = this.$store.getters.getBannerById(id)
       if (Number.isInteger(banner.id)) {
+        this.$loader.open()
         this.$store.dispatch('deleteBanner', banner.id).then((response) => {
           if (response.ok) {
-            this.$store.dispatch('getBanners')
+            this.getBanners()
           }
         }, (error) => {
           console.log(error)
         })
       }
+    },
+    getBanners () {
+      this.$store.dispatch('getBanners').then(() => {
+        this.$loader.close()
+      })
     }
   },
   computed: {
@@ -68,9 +74,7 @@ export default {
     this.$loader.open()
   },
   created () {
-    this.$store.dispatch('getBanners').then(() => {
-      this.$loader.close()
-    })
+    this.getBanners()
   },
   beforeDestroy () {
     this.$store.commit('setBanners', [])

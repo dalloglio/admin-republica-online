@@ -23,7 +23,6 @@
       <ads-form-contact :model="form"></ads-form-contact>
       <el-button type="success" @click="save" :loading="saving">Salvar</el-button>
     </el-form>
-
   </div>
 </template>
 

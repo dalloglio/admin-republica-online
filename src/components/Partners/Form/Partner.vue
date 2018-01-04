@@ -13,7 +13,7 @@
     </el-form-item>
 
     <app-upload-simple
-    label="Image"
+    label="Imagem"
     info="Arquivos JPEG, PNG ou GIF com um tamanho de até 2MB."
     :model="model"
     :upload="upload"></app-upload-simple>

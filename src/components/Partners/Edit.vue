@@ -13,175 +13,97 @@
       </el-button-group>
     </h1>
 
-    <el-card class="box-card">
+    <el-alert :closable="false" title="Atenção" description="Os campos com * devem ser preenchidos." type="warning" show-icon></el-alert>
 
-      <el-alert :closable="false" title="Atenção" description="Todos os campos devem ser preenchidos." type="warning" show-icon></el-alert>
-
-      <el-form label-position="top" :model="form">
-        <el-form-item label="Título">
-          <el-input v-model="form.title" type="text" placeholder="Informe o título" :minlength="3" :maxlength="255"></el-input>
-        </el-form-item>
-        <el-form-item label="Descrição">
-          <el-input v-model="form.description" type="text" placeholder="Informe uma descrição" :minlength="3" :maxlength="255"></el-input>
-        </el-form-item>
-        <el-form-item label="Link">
-          <el-input v-model="form.link" type="text" placeholder="Informe o link" :minlength="3" :maxlength="255"></el-input>
-        </el-form-item>
-        <el-form-item label="Banner">
-          <div v-if="imageUrl" class="image">
-            <img :src="imageUrl">
-            <el-button type="danger" @click="deletePhoto">Remover</el-button>
-          </div>
-          <el-upload
-            v-else
-            class="uploader"
-            :data="upload.data"
-            :name="upload.name"
-            :action="upload.action"
-            :file-list="fileList"
-            :list-type="upload.list_type"
-            :show-file-list="upload.show_file_list"
-            :multiple="upload.multiple"
-            :accept="upload.accept"
-            :auto-upload="upload.auto"
-            :on-change="onChange">
-            <i class="el-icon-plus"></i>
-            <div slot="tip" class="el-upload__tip">Arquivos JPEG, PNG ou GIF com um tamanho de até 2MB.</div>
-          </el-upload>
-        </el-form-item>
-        <el-button type="success" @click="save" :loading="saving">Salvar</el-button>
-      </el-form>
-    </el-card>
+    <el-form ref="form" label-position="top" :model="form" :rules="rules">
+      <partners-form-partner :model="form"></partners-form-partner>
+      <el-button type="success" @click="save" :loading="saving">Salvar</el-button>
+    </el-form>
   </div>
 </template>
 
 <script>
-export default {
-  'name': 'partners-edit',
-  data () {
-    return {
-      file: null,
-      imageUrl: '',
-      saving: false,
-      upload: {
-        data: {},
-        name: 'photo',
-        action: '',
-        show_file_list: false,
-        list_type: 'text',
-        fileList: [],
-        multiple: false,
-        accept: 'image/*',
-        auto: false,
-        disabled: true
+  import PartnersFormPartner from '@/components/Partners/Form/Partner'
+  import Partner from '@/utils/domains/partner'
+  import rulesForm from '@/utils/rules/form'
+  export default {
+    name: 'partners-edit',
+    components: {
+      PartnersFormPartner
+    },
+    data () {
+      return {
+        saving: false,
+        rules: rulesForm.Banner
       }
-    }
-  },
-  methods: {
-    save () {
-      this.saving = true
-      let params = {
-        id: this.$route.params.id,
-        data: this.form
-      }
-      this.$store.dispatch('updatePartner', params).then((response) => {
-        if (response.ok) {
-          if (this.file) {
-            let photoData = new FormData()
-            photoData.append('photo', this.file)
+    },
+    methods: {
+      save () {
+        this.$refs.form.validate((valid) => {
+          if (valid) {
+            this.saving = true
             let params = {
-              id: response.body.id,
-              data: photoData
+              id: this.$route.params.id,
+              data: this.form
             }
-            this.$store.dispatch('createPartnerPhoto', params).then((response) => {
-              this.saving = false
+            this.$store.dispatch('updatePartner', params).then((response) => {
               if (response.ok) {
-                this.$router.push({ name: 'partners.index' })
+                if (this.form.photo instanceof File) {
+                  let photoData = new FormData()
+                  photoData.append('photo', this.form.photo)
+                  let params = {
+                    id: response.body.id,
+                    data: photoData
+                  }
+                  this.$store.dispatch('createPartnerPhoto', params).then((response) => {
+                    this.saving = false
+                    if (response.ok) {
+                      this.$router.push({ name: 'partners.index' })
+                    }
+                  }, (error) => {
+                    this.saving = false
+                    console.log(error)
+                  })
+                } else {
+                  this.saving = false
+                  this.$router.push({ name: 'partners.index' })
+                }
+              } else {
+                this.saving = false
               }
             }, (error) => {
               this.saving = false
               console.log(error)
+              this.$message({
+                showClose: true,
+                message: 'Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.',
+                type: 'error'
+              })
             })
           } else {
-            this.saving = false
-            this.$router.push({ name: 'partners.index' })
+            this.$message.warning('Ops, preencha corretamente o formulário!')
+            return false
           }
-        } else {
-          this.saving = false
-        }
-      }, (error) => {
-        this.saving = false
-        console.log(error)
-        this.$message({
-          showClose: true,
-          message: 'Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.',
-          type: 'error'
         })
+      }
+    },
+    computed: {
+      form () {
+        return this.$store.state.partner.partner || new Partner()
+      }
+    },
+    beforeCreate () {
+      this.$loader.open()
+    },
+    created () {
+      this.$store.dispatch('getPartner', this.$route.params.id).then(() => {
+        this.$loader.close()
       })
     },
-    deletePhoto () {
-      if (Number.isInteger(this.photo.id)) {
-        this.$store.dispatch('deletePhoto', this.photo.id).then((response) => {
-          if (response.ok) {
-            this.form.photo = {
-              id: null,
-              photo: null
-            }
-            this.imageUrl = ''
-          }
-        }, (error) => {
-          console.log(error)
-        })
-      } else {
-        this.file = {}
-        this.imageUrl = ''
-      }
-    },
-    onChange (file, fileList) {
-      this.file = file.raw
-      this.imageUrl = file.url
+    beforeDestroy () {
+      this.$store.commit('setPartner', {})
     }
-  },
-  computed: {
-    form () {
-      return this.$store.state.partner.partner || {}
-    },
-    photo () {
-      if (!this.form.photo) {
-        return {
-          id: null,
-          photo: null
-        }
-      }
-      return this.form.photo
-    },
-    fileList () {
-      return [{
-        name: this.photo.name || '',
-        url: this.photoUrl || ''
-      }]
-    },
-    photoUrl () {
-      let url = ''
-      if (this.photo.id > 0) {
-        url = this.$store.getters.urlPhoto(this.photo.id)
-      }
-      this.imageUrl = url
-      return url
-    }
-  },
-  beforeCreate () {
-    this.$loader.open()
-  },
-  created () {
-    this.$store.dispatch('getPartner', this.$route.params.id).then(() => {
-      this.$loader.close()
-    })
-  },
-  beforeDestroy () {
-    this.$store.commit('setPartner', {})
   }
-}
 </script>
 
 <style>

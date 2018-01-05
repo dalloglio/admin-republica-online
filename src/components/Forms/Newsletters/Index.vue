@@ -41,6 +41,7 @@ export default {
       if (!Number.isInteger(id) || !confirm('Você tem certeza que deseja excluir este registro?')) {
         return
       }
+      this.$loader.open()
       let params = {
         form_id: this.form_id,
         id: id

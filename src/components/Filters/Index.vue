@@ -50,16 +50,22 @@ export default {
       if (!Number.isInteger(id) || !confirm('Você tem certeza que deseja excluir este registro?')) {
         return
       }
+      this.$loader.open()
       let filter = this.$store.getters.getFilterById(id)
       if (Number.isInteger(filter.id)) {
         this.$store.dispatch('deleteFilter', filter.id).then((response) => {
           if (response.ok) {
-            this.$store.dispatch('getFilters')
+            this.getFilters()
           }
         }, (error) => {
           console.log(error)
         })
       }
+    },
+    getFilters () {
+      this.$store.dispatch('getFilters').then(() => {
+        this.$loader.close()
+      })
     }
   },
   computed: {
@@ -71,9 +77,7 @@ export default {
     this.$loader.open()
   },
   created () {
-    this.$store.dispatch('getFilters').then(() => {
-      this.$loader.close()
-    })
+    this.getFilters()
   },
   beforeDestroy () {
     this.$store.commit('setFilters', [])

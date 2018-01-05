@@ -25,7 +25,7 @@
 <script>
   import FiltersFormFilter from '@/components/Filters/Form/Filter'
   import Filter from '@/utils/domains/filter'
-  import rulesForm from '@/utils/rules/form'
+  import rules from '@/utils/rules/filter-create'
   export default {
     name: 'filters-create',
     components: {
@@ -34,7 +34,7 @@
     data () {
       return {
         saving: false,
-        rules: rulesForm.Filter,
+        rules: rules,
         form: new Filter()
       }
     },

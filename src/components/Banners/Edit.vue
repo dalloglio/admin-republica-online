@@ -25,7 +25,7 @@
 <script>
   import BannersFormBanner from '@/components/Banners/Form/Banner'
   import Banner from '@/utils/domains/banner'
-  import rulesForm from '@/utils/rules/form'
+  import rules from '@/utils/rules/banner-edit'
   export default {
     name: 'banners-edit',
     components: {
@@ -34,7 +34,7 @@
     data () {
       return {
         saving: false,
-        rules: rulesForm.Banner
+        rules: rules
       }
     },
     methods: {

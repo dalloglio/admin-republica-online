@@ -27,7 +27,7 @@
   import UsersFormUser from '@/components/Users/Form/User'
   import UsersFormAddress from '@/components/Users/Form/Address'
   import User from '@/utils/domains/user'
-  import rulesForm from '@/utils/rules/form'
+  import rules from '@/utils/rules/user-create'
   export default {
     name: 'users-create',
     components: {
@@ -38,7 +38,7 @@
       return {
         saving: false,
         form: new User(),
-        rules: rulesForm.User
+        rules: rules
       }
     },
     methods: {

@@ -35,7 +35,7 @@
   import Ad from '@/utils/domains/ad'
   import Address from '@/utils/domains/address'
   import Contact from '@/utils/domains/contact'
-  import rulesForm from '@/utils/rules/form'
+  import rules from '@/utils/rules/ad-edit'
   export default {
     'name': 'ads-edit',
     components: {
@@ -48,7 +48,7 @@
     data () {
       return {
         saving: false,
-        rules: rulesForm.Ad
+        rules: rules
       }
     },
     methods: {

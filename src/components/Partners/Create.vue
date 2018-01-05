@@ -25,7 +25,7 @@
 <script>
   import PartnersFormPartner from '@/components/Partners/Form/Partner'
   import Partner from '@/utils/domains/partner'
-  import rulesForm from '@/utils/rules/form'
+  import rules from '@/utils/rules/partner-create'
   export default {
     name: 'partners-create',
     components: {
@@ -34,7 +34,7 @@
     data () {
       return {
         saving: false,
-        rules: rulesForm.Banner,
+        rules: rules,
         form: new Partner()
       }
     },

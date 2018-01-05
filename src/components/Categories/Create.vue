@@ -25,7 +25,7 @@
 <script>
   import CategoriesFormCategory from '@/components/Categories/Form/Category'
   import Category from '@/utils/domains/category'
-  import rulesForm from '@/utils/rules/form'
+  import rules from '@/utils/rules/category-create'
   export default {
     name: 'categories-create',
     components: {
@@ -34,7 +34,7 @@
     data () {
       return {
         saving: false,
-        rules: rulesForm.Category,
+        rules: rules,
         form: new Category()
       }
     },

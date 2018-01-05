@@ -33,7 +33,7 @@
   import AdsFormPhotos from '@/components/Ads/Form/Photos'
   import AdsFormContact from '@/components/Ads/Form/Contact'
   import Ad from '@/utils/domains/ad'
-  import rulesForm from '@/utils/rules/form'
+  import rules from '@/utils/rules/ad-create'
   export default {
     'name': 'ads-create',
     components: {
@@ -47,7 +47,7 @@
       return {
         saving: false,
         form: new Ad(),
-        rules: rulesForm.Ad
+        rules: rules
       }
     },
     methods: {

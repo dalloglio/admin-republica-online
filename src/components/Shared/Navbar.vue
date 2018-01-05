@@ -19,18 +19,18 @@
 </script>
 
 <style lang="css" scoped>
-.el-menu {
-  border-radius: 0;
-}
-.el-menu .el-menu-item {
-  border-bottom: 0 none;
-}
-.el-menu .el-menu-item i.fa {
-  vertical-align: top;
-  line-height: 60px;
-  font-size: 2em;
-}
-.el-menu .el-menu-item.logout {
-  float: right;
-}
+  .el-menu {
+    border-radius: 0;
+  }
+  .el-menu .el-menu-item {
+    border-bottom: 0 none;
+  }
+  .el-menu .el-menu-item i.fa {
+    vertical-align: top;
+    line-height: 60px;
+    font-size: 2em;
+  }
+  .el-menu .el-menu-item.logout {
+    float: right;
+  }
 </style>

@@ -25,7 +25,7 @@
 <script>
   import CategoriesFormCategory from '@/components/Categories/Form/Category'
   import Category from '@/utils/domains/category'
-  import rulesForm from '@/utils/rules/form'
+  import rules from '@/utils/rules/category-edit'
   export default {
     name: 'categories-edit',
     components: {
@@ -34,7 +34,7 @@
     data () {
       return {
         saving: false,
-        rules: rulesForm.Category,
+        rules: rules,
         filterMethod (query, item) {
           return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1
         }

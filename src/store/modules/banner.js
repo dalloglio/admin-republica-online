@@ -39,14 +39,20 @@ export default {
 
   actions: {
     getBanners ({ commit }) {
-      Vue.http.get(ENDPOINT).then((response) => {
-        commit('setBanners', response.body)
+      return new Promise((resolve, reject) => {
+        Vue.http.get(ENDPOINT).then((response) => {
+          commit('setBanners', response.body)
+          resolve(response)
+        }, error => reject(error))
       })
     },
 
     getBanner ({ commit }, id) {
-      Vue.http.get(ENDPOINT + '/' + id).then((response) => {
-        commit('setBanner', response.body)
+      return new Promise((resolve, reject) => {
+        Vue.http.get(ENDPOINT + '/' + id).then((response) => {
+          commit('setBanner', response.body)
+          resolve(response)
+        }, error => reject(error))
       })
     },
 

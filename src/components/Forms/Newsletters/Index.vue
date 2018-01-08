@@ -1,5 +1,5 @@
 <template>
-  <div class="newsletters index">
+  <div v-if="form.id" class="newsletters index">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: 'home' }">Home</el-breadcrumb-item>
       <el-breadcrumb-item>{{ form.title }}</el-breadcrumb-item>
@@ -41,6 +41,7 @@ export default {
       if (!Number.isInteger(id) || !confirm('Você tem certeza que deseja excluir este registro?')) {
         return
       }
+      this.$loader.open()
       let params = {
         form_id: this.form_id,
         id: id
@@ -54,7 +55,9 @@ export default {
       })
     },
     getForm () {
-      this.$store.dispatch('getForm', this.form_id)
+      this.$store.dispatch('getForm', this.form_id).then(() => {
+        this.$loader.close()
+      })
     }
   },
   computed: {
@@ -62,11 +65,17 @@ export default {
       return this.$store.state.form.form
     },
     contacts () {
-      return this.$store.state.form.form.contacts
+      return this.form.contacts
     }
+  },
+  beforeCreate () {
+    this.$loader.open()
   },
   created () {
     this.getForm()
+  },
+  beforeDestroy () {
+    this.$store.commit('setForm', {})
   }
 }
 </script>

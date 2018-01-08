@@ -20,20 +20,26 @@
 </template>
 
 <script>
-import appMenuProfile from '@/components/Shared/MenuProfile'
-export default {
-  name: 'menu',
-  components: {
-    'app-menu-profile': appMenuProfile
+  import AppMenuProfile from '@/components/Shared/MenuProfile'
+  export default {
+    name: 'menu',
+    components: {
+      AppMenuProfile
+    }
   }
-}
 </script>
 
 <style scoped>
-.menu, .el-menu {
-  height: 100%;
-}
-i.fa {
-  margin-right: 10px;
-}
+  .menu, .el-menu {
+    height: 100%;
+    overflow: hidden;
+  }
+  i.fa {
+    margin-right: 10px;
+  }
+  @media (max-height: 600px) {
+    .el-menu {
+      overflow-y: scroll;
+    }
+  }
 </style>

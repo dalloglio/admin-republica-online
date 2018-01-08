@@ -11,6 +11,7 @@ import { store } from './store'
 import UtilsAuth from './utils/auth'
 import UtilsCep from './utils/cep'
 import UtilsDate from './utils/date'
+import UtilsLoader from './utils/loader'
 import UtilsUrl from './utils/url'
 
 Vue.use(VueResource)
@@ -18,6 +19,7 @@ Vue.use(ElementUI, { locale })
 Vue.use(UtilsAuth, { client_id: process.env.API_CLIENT_ID, client_secret: process.env.API_CLIENT_SECRET })
 Vue.use(UtilsCep)
 Vue.use(UtilsDate)
+Vue.use(UtilsLoader)
 Vue.use(UtilsUrl)
 
 Vue.http.options.root = process.env.API_URL

@@ -1,5 +1,5 @@
 <template>
-  <div class="resumes show">
+  <div v-if="form.id" class="resumes show">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: 'home' }">Home</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'resumes.index' }">{{ form.title }}</el-breadcrumb-item>
@@ -59,19 +59,28 @@ export default {
         form_id: this.form_id,
         id: this.$route.params.id
       }
-      this.$store.dispatch('getFormContact', params)
+      this.$store.dispatch('getFormContact', params).then(() => {
+        this.$loader.close()
+      })
     }
   },
   computed: {
     form () {
-      return this.$store.state.form.form
+      return this.$store.state.form.form || {}
     },
     contact () {
-      return this.$store.state.form.contact
+      return this.$store.state.form.contact || {}
     }
+  },
+  beforeCreate () {
+    this.$loader.open()
   },
   created () {
     this.getFormContact()
+  },
+  beforeDestroy () {
+    this.$store.commit('setForm', {})
+    this.$store.commit('setFormContact', {})
   }
 }
 </script>

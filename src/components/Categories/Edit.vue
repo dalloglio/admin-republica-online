@@ -13,93 +13,70 @@
       </el-button-group>
     </h1>
 
-    <el-card class="box-card">
+    <el-alert :closable="false" title="Atenção" description="Os campos com * devem ser preenchidos." type="warning" show-icon></el-alert>
 
-      <el-alert :closable="false" title="Atenção" description="Todos os campos devem ser preenchidos." type="warning" show-icon></el-alert>
-
-      <el-form label-position="top" :model="form">
-        <el-form-item label="Título">
-          <el-input v-model="form.title" type="text" placeholder="Informe o título" :minlength="3" :maxlength="255"></el-input>
-        </el-form-item>
-        <el-form-item label="Descrição">
-          <el-input v-model="form.description" type="text" placeholder="Informe uma descrição" :minlength="3" :maxlength="255"></el-input>
-        </el-form-item>
-        <el-form-item label="Filtros">
-          <el-transfer filterable
-            :filter-method="filterMethod" filter-placeholder="Pesquisar filtro..." v-model="filtersSelected" :data="filters">
-          </el-transfer>
-        </el-form-item>
-        <el-form-item label="Ativo">
-          <el-switch v-model="form.status" on-color="#13ce66" off-color="#ff4949" :on-value="true" :off-value="false" on-text="Sim" off-text="Não"></el-switch>
-        </el-form-item>
-        <el-button type="success" @click="save">Salvar</el-button>
-      </el-form>
-    </el-card>
+    <el-form ref="form" label-position="top" :model="form" :rules="rules">
+      <categories-form-category :model="form"></categories-form-category>
+      <el-button type="success" @click="save" :loading="saving">Salvar</el-button>
+    </el-form>
   </div>
 </template>
 
 <script>
-export default {
-  'name': 'categories-edit',
-  data () {
-    return {
-      filtersSelected: [],
-      filterMethod (query, item) {
-        return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1
-      }
-    }
-  },
-  methods: {
-    save () {
-      this.form.filters = this.filtersSelected
-      let params = {
-        id: this.$route.params.id,
-        data: this.form
-      }
-      this.$store.dispatch('updateCategory', params).then((response) => {
-        if (response.ok) {
-          this.$router.push({ name: 'categories.index' })
-        }
-      }, (error) => {
-        console.log(error)
-        this.$message({
-          showClose: true,
-          message: 'Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.',
-          type: 'error'
-        })
-      })
-    }
-  },
-  computed: {
-    form () {
-      return this.$store.state.category.category
+  import CategoriesFormCategory from '@/components/Categories/Form/Category'
+  import Category from '@/utils/domains/category'
+  import rules from '@/utils/rules/category-edit'
+  export default {
+    name: 'categories-edit',
+    components: {
+      CategoriesFormCategory
     },
-    filters () {
-      let data = []
-      let filters = this.$store.state.filter.filters.data
-      if (filters !== undefined) {
-        filters.forEach((filter) => {
-          data.push({
-            key: filter.id,
-            label: filter.title
-          })
-        })
+    data () {
+      return {
+        saving: false,
+        rules: rules,
+        filterMethod (query, item) {
+          return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1
+        }
       }
-      return data
-    }
-  },
-  created () {
-    this.$store.dispatch('getCategory', this.$route.params.id).then((response) => {
-      let filters = response.body.filters
-      if (filters) {
-        filters.forEach((filter) => {
-          if (filter.id) {
-            this.filtersSelected.push(filter.id)
+    },
+    methods: {
+      save () {
+        this.$refs.form.validate((valid) => {
+          if (valid) {
+            this.saving = true
+            let params = {
+              id: this.$route.params.id,
+              data: this.form
+            }
+            this.$store.dispatch('updateCategory', params).then((response) => {
+              this.saving = false
+              if (response.ok) {
+                this.$router.push({ name: 'categories.index' })
+              }
+            }, (error) => {
+              this.saving = false
+              console.log(error)
+              this.$message({
+                showClose: true,
+                message: 'Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.',
+                type: 'error'
+              })
+            })
+          } else {
+            this.$message.warning('Ops, preencha corretamente o formulário!')
+            return false
           }
         })
       }
-    })
-    this.$store.dispatch('getFilters')
+    },
+    computed: {
+      form () {
+        return this.$store.state.category.category || new Category()
+      }
+    },
+    beforeDestroy () {
+      this.$store.commit('setCategory', {})
+    }
   }
-}
 </script>

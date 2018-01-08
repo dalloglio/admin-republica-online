@@ -50,16 +50,22 @@ export default {
       if (!Number.isInteger(id) || !confirm('Você tem certeza que deseja excluir este registro?')) {
         return
       }
+      this.$loader.open()
       let user = this.$store.getters.getUserById(id)
       if (Number.isInteger(user.id)) {
         this.$store.dispatch('deleteUser', user.id).then((response) => {
           if (response.ok) {
-            this.$store.dispatch('getUsers')
+            this.getUsers()
           }
         }, (error) => {
           console.log(error)
         })
       }
+    },
+    getUsers () {
+      this.$store.dispatch('getUsers').then(() => {
+        this.$loader.close()
+      })
     }
   },
   computed: {
@@ -67,8 +73,14 @@ export default {
       return this.$store.state.user.users.data
     }
   },
+  beforeCreate () {
+    this.$loader.open()
+  },
   created () {
-    this.$store.dispatch('getUsers')
+    this.getUsers()
+  },
+  beforeDestroy () {
+    this.$store.commit('setUsers', [])
   }
 }
 </script>

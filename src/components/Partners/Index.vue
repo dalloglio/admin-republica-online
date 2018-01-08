@@ -36,35 +36,47 @@
 </template>
 
 <script>
-export default {
-  name: 'partners-index',
-  methods: {
-    datetimeToBr (row, column, date) {
-      return this.date.toDateTimeBr(date)
-    },
-    deletePartner (id) {
-      if (!Number.isInteger(id) || !confirm('Você tem certeza que deseja excluir este registro?')) {
-        return
-      }
-      let partner = this.$store.getters.getPartnerById(id)
-      if (Number.isInteger(partner.id)) {
-        this.$store.dispatch('deletePartner', partner.id).then((response) => {
-          if (response.ok) {
-            this.$store.dispatch('getPartners')
-          }
-        }, (error) => {
-          console.log(error)
+  export default {
+    name: 'partners-index',
+    methods: {
+      datetimeToBr (row, column, date) {
+        return this.date.toDateTimeBr(date)
+      },
+      deletePartner (id) {
+        if (!Number.isInteger(id) || !confirm('Você tem certeza que deseja excluir este registro?')) {
+          return
+        }
+        this.$loader.open()
+        let partner = this.$store.getters.getPartnerById(id)
+        if (Number.isInteger(partner.id)) {
+          this.$store.dispatch('deletePartner', partner.id).then((response) => {
+            if (response.ok) {
+              this.getPartners()
+            }
+          }, (error) => {
+            console.log(error)
+          })
+        }
+      },
+      getPartners () {
+        this.$store.dispatch('getPartners').then(() => {
+          this.$loader.close()
         })
       }
+    },
+    computed: {
+      partners () {
+        return this.$store.state.partner.partners.data || []
+      }
+    },
+    beforeCreate () {
+      this.$loader.open()
+    },
+    created () {
+      this.getPartners()
+    },
+    beforeDestroy () {
+      this.$store.commit('setPartners', [])
     }
-  },
-  computed: {
-    partners () {
-      return this.$store.state.partner.partners.data
-    }
-  },
-  created () {
-    this.$store.dispatch('getPartners')
   }
-}
 </script>

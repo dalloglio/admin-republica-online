@@ -1,17 +1,37 @@
 <template lang="html">
   <div class="menu-profile">
     <div class="avatar">
-      <img src="https://randomuser.me/api/portraits/men/81.jpg">
+      <img v-if="photoUrl" :src="photoUrl" :alt="user.name">
+      <avatar v-else :username="user.name" :size="40" background-color="#324157"></avatar>
     </div>
     <div class="user">
-      Ricardo Pires Dall`Oglio
+      {{ user.name }}
     </div>
   </div>
 </template>
 
 <script>
+  import Avatar from 'vue-avatar'
   export default {
-    name: 'menu-profile'
+    name: 'menu-profile',
+    components: {
+      Avatar
+    },
+    computed: {
+      user () {
+        return this.$store.state.auth.user || {}
+      },
+      photo () {
+        return this.user.photo || {}
+      },
+      photoUrl () {
+        let url = ''
+        if (this.photo.id > 0) {
+          url = this.$store.getters.urlPhoto(this.photo.id)
+        }
+        return url
+      }
+    }
   }
 </script>
 

@@ -33,42 +33,50 @@
 </template>
 
 <script>
-
-export default {
-  name: 'ads-index',
-  methods: {
-    status (row, column, status) {
-      if (status) {
-        return 'Sim'
+  export default {
+    name: 'ads-index',
+    methods: {
+      status (row, column, status) {
+        if (status) {
+          return 'Sim'
+        }
+        return 'Não'
+      },
+      datetimeToBr (row, column, date) {
+        return this.date.toDateTimeBr(date)
+      },
+      deleteAd (id) {
+        if (!Number.isInteger(id) || !confirm('Você tem certeza que deseja excluir este registro?')) {
+          return
+        }
+        let ad = this.$store.getters.getAdById(id)
+        if (Number.isInteger(ad.id)) {
+          this.$loader.open()
+          this.$store.dispatch('deleteAd', ad.id).then(() => {
+            this.$store.dispatch('getAds').then(() => {
+              this.$loader.close()
+            })
+          }, (error) => {
+            console.log(error)
+          })
+        }
       }
-      return 'Não'
     },
-    datetimeToBr (row, column, date) {
-      return this.date.toDateTimeBr(date)
+    computed: {
+      ads () {
+        return this.$store.state.ad.ads.data
+      }
     },
-    deleteAd (id) {
-      if (!Number.isInteger(id) || !confirm('Você tem certeza que deseja excluir este registro?')) {
-        return
-      }
-      let ad = this.$store.getters.getAdById(id)
-      if (Number.isInteger(ad.id)) {
-        this.$store.dispatch('deleteAd', ad.id).then((response) => {
-          if (response.ok) {
-            this.$store.dispatch('getAds')
-          }
-        }, (error) => {
-          console.log(error)
-        })
-      }
+    beforeCreate () {
+      this.$loader.open()
+    },
+    created () {
+      this.$store.dispatch('getAds').then(() => {
+        this.$loader.close()
+      })
+    },
+    beforeDestroy () {
+      this.$store.commit('setAds', [])
     }
-  },
-  computed: {
-    ads () {
-      return this.$store.state.ad.ads.data
-    }
-  },
-  created () {
-    this.$store.dispatch('getAds')
   }
-}
 </script>

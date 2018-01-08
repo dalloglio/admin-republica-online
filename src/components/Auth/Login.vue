@@ -7,16 +7,16 @@
 
           <h1><small>Admin</small>Login</h1>
 
-          <el-form label-position="top" :model="user" class="clearfix">
-            <el-form-item label="E-mail">
-              <el-input v-model="user.username" :required="true" placeholder="E-mail" type="email" :minlength="3" :maxlength="255" :autofocus="true"></el-input>
+          <el-form ref="formLogin" label-position="top" :model="user" :rules="rules" class="clearfix">
+            <el-form-item label="E-mail" prop="username">
+              <el-input v-model="user.username" :required="true" placeholder="E-mail" type="email" :minlength="3" :maxlength="255" :autofocus="true" auto-complete="off"></el-input>
             </el-form-item>
 
-            <el-form-item label="Senha">
-              <el-input v-model="user.password" :required="true" placeholder="Senha" type="password" :minlength="6" :maxlength="20"></el-input>
+            <el-form-item label="Senha" prop="password">
+              <el-input v-model="user.password" :required="true" placeholder="Senha" type="password" :minlength="6" :maxlength="20" auto-complete="off"></el-input>
             </el-form-item>
 
-            <el-button type="primary" class="right" @click="onSubmit" :loading="loading">Entrar</el-button>
+            <el-button type="primary" class="right" :loading="loading" @click="onSubmit">Entrar</el-button>
           </el-form>
 
         </el-card>
@@ -35,22 +35,41 @@ export default {
       user: {
         username: '',
         password: ''
+      },
+      rules: {
+        username: [
+          { required: true, message: 'Informe o e-mail', trigger: 'blur' },
+          { type: 'email', message: 'Informe um endereço de e-mail válido', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: 'Informe a senha', trigger: 'blur' },
+          { min: 6, max: 20, message: 'A senha deve ter entre 6 e 20 caracteres', trigger: 'blur' }
+        ]
       }
     }
   },
   methods: {
     onSubmit: function () {
-      this.loading = true
-      this.$auth.login(this.user).then((response) => {
-        this.loading = false
-        if (response.status === true) {
-          this.$router.push({ name: response.redirect })
+      this.$refs.formLogin.validate((valid) => {
+        if (valid) {
+          this.loading = true
+          this.$auth.login(this.user).then((response) => {
+            this.loading = false
+            if (response.status === true) {
+              this.$store.dispatch('getAuthUser').then(() => {
+                this.$router.push({ name: response.redirect })
+              })
+            } else {
+              this.message('Ops, não foi possível fazer login! ' + response.message || '')
+            }
+          }, (error) => {
+            this.loading = false
+            this.message('Ops, não foi possível fazer login! ' + error.message || '')
+          })
         } else {
-          this.message('Oops, não foi possível fazer login! ' + response.message)
+          this.message('Ops, preencha corretamente o formulário!')
+          return false
         }
-      }, (error) => {
-        this.loading = false
-        this.message('Oops, não foi possível fazer login! ' + error.message)
       })
     },
 

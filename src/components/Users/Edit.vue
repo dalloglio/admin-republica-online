@@ -1,5 +1,5 @@
 <template>
-  <div class="users edit">
+  <div v-if="form.name" class="users edit">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ name: 'home' }">Home</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'users.index' }">Usuários</el-breadcrumb-item>
@@ -13,270 +13,99 @@
       </el-button-group>
     </h1>
 
-    <el-alert :closable="false" title="Atenção" description="Todos os campos devem ser preenchidos." type="warning" show-icon></el-alert>
+    <el-alert :closable="false" title="Atenção" description="Os campos com * devem ser preenchidos." type="warning" show-icon></el-alert>
 
-    <el-form label-position="top" :model="form">
-      <el-card class="box-card">
-        <el-form-item label="Nome completo">
-          <el-input v-model="form.name" type="text" placeholder="Informe o nome completo" :minlength="3" :maxlength="255"></el-input>
-        </el-form-item>
-        <el-form-item label="Nome">
-          <el-input v-model="form.first_name" type="text" placeholder="Informe o nome" :minlength="3" :maxlength="255"></el-input>
-        </el-form-item>
-        <el-form-item label="Sobrenome">
-          <el-input v-model="form.last_name" type="text" placeholder="Informe o sobrenome" :minlength="3" :maxlength="255"></el-input>
-        </el-form-item>
-        <el-form-item label="Aniversário">
-          <el-date-picker v-model="form.birthday" type="date" placeholder="Informe a data de nascimento" format="dd/MM/yyyy"></el-date-picker>
-        </el-form-item>
-        <el-form-item label="E-mail">
-          <el-input v-model="form.email" type="email" placeholder="Informe o e-mail" :minlength="3" :maxlength="255"></el-input>
-        </el-form-item>
-        <el-form-item label="Senha">
-          <el-input v-model="form.password" type="password" placeholder="Informe a senha" :minlength="6" :maxlength="20"></el-input>
-        </el-form-item>
-        <el-form-item label="Sexo">
-          <el-radio-group v-model="form.gender">
-            <el-radio-button label="Male">Masculino</el-radio-button>
-            <el-radio-button label="Female">Feminino</el-radio-button>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="Ativo">
-          <el-switch v-model="form.status" on-color="#13ce66" off-color="#ff4949" :on-value="true" :off-value="false" on-text="Sim" off-text="Não"></el-switch>
-        </el-form-item>
-        <el-form-item label="Avatar">
-          <div v-if="imageUrl" class="image">
-            <img :src="imageUrl">
-            <el-button type="danger" @click="deletePhoto">Remover</el-button>
-          </div>
-          <el-upload
-            v-else
-            class="uploader"
-            :data="upload.data"
-            :name="upload.name"
-            :action="upload.action"
-            :list-type="upload.list_type"
-            :show-file-list="upload.show_file_list"
-            :multiple="upload.multiple"
-            :accept="upload.accept"
-            :auto-upload="upload.auto"
-            :on-change="onChange">
-            <i class="el-icon-plus"></i>
-            <div slot="tip" class="el-upload__tip">Arquivos JPEG, PNG ou GIF com um tamanho de até 2MB.</div>
-          </el-upload>
-        </el-form-item>
-      </el-card>
-
-      <el-card class="box-card">
-        <h2>Endereço</h2>
-        <el-form-item label="Cep">
-          <el-input v-model="form.address.zip_code" type="text" placeholder="Informe o cep" :minlength="8" :maxlength="9" @blur="pesquisarCep"></el-input>
-        </el-form-item>
-        <el-form-item label="Estado">
-          <el-input v-model="form.address.state" type="text" placeholder="Informe o estado" :minlength="3" :maxlength="255"></el-input>
-        </el-form-item>
-        <el-form-item label="Cidade">
-          <el-input v-model="form.address.city" type="text" placeholder="Informe a cidade" :minlength="3" :maxlength="255"></el-input>
-        </el-form-item>
-        <el-form-item label="Bairro">
-          <el-input v-model="form.address.neighborhood" type="text" placeholder="Informe o bairro" :minlength="3" :maxlength="255"></el-input>
-        </el-form-item>
-        <el-form-item label="Rua">
-          <el-input v-model="form.address.street" type="text" placeholder="Informe a rua" :minlength="3" :maxlength="255"></el-input>
-        </el-form-item>
-        <el-form-item label="Número">
-          <el-input v-model="form.address.number" type="text" placeholder="Informe o número" :minlength="3" :maxlength="20"></el-input>
-        </el-form-item>
-        <el-form-item label="Complemento">
-          <el-input v-model="form.address.sub_address" type="text" placeholder="Informe o complemento" :minlength="3" :maxlength="255"></el-input>
-        </el-form-item>
-        <el-form-item label="No mapa">
-          <el-radio-group v-model="form.address.show_on_map">
-            <el-radio label="0">Não mostrar</el-radio>
-            <el-radio label="1">Mostrar a localização aproximada</el-radio>
-            <el-radio label="2">Mostrar a localização exata</el-radio>
-          </el-radio-group>
-        </el-form-item>
-      </el-card>
-
-      <el-button type="success" @click="save" :disabled="saving">Salvar</el-button>
+    <el-form ref="form" label-position="top" :model="form" :rules="rules">
+      <users-form-user :model="form"></users-form-user>
+      <users-form-address :model="form"></users-form-address>
+      <el-button type="success" @click="save" :loading="saving">Salvar</el-button>
     </el-form>
   </div>
 </template>
 
 <script>
-export default {
-  'name': 'users-edit',
-  data () {
-    return {
-      file: null,
-      imageUrl: '',
-      saving: false,
-      upload: {
-        name: 'photo',
-        action: '',
-        show_file_list: false,
-        list_type: 'text',
-        fileList: [],
-        multiple: false,
-        accept: 'image/*',
-        auto: false,
-        disabled: true
+  import UsersFormUser from '@/components/Users/Form/User'
+  import UsersFormAddress from '@/components/Users/Form/Address'
+  import User from '@/utils/domains/user'
+  import rules from '@/utils/rules/user-edit'
+  export default {
+    'name': 'users-edit',
+    components: {
+      UsersFormUser,
+      UsersFormAddress
+    },
+    data () {
+      return {
+        saving: false,
+        rules: rules
       }
-    }
-  },
-  methods: {
-    save () {
-      this.form.birthday = this.date.toDate(this.form.birthday)
-      let params = {
-        id: this.$route.params.id,
-        data: this.form
-      }
-      this.$store.dispatch('updateUser', params).then((response) => {
-        if (response.ok) {
-          if (this.file) {
-            let photoData = new FormData()
-            photoData.append('photo', this.file)
+    },
+    methods: {
+      save () {
+        this.$refs.form.validate((valid) => {
+          if (valid) {
+            this.saving = true
+            this.form.birthday = this.date.toDate(this.form.birthday)
             let params = {
-              id: response.body.id,
-              data: photoData
+              id: this.$route.params.id,
+              data: this.form
             }
-            this.$store.dispatch('createUserPhoto', params).then((response) => {
+            this.$store.dispatch('updateUser', params).then((response) => {
               if (response.ok) {
-                this.$router.push({ name: 'users.index' })
+                if (this.form.photo instanceof File) {
+                  let photoData = new FormData()
+                  photoData.append('photo', this.form.photo)
+                  let params = {
+                    id: response.body.id,
+                    data: photoData
+                  }
+                  this.$store.dispatch('createUserPhoto', params).then((response) => {
+                    this.saving = false
+                    if (response.ok) {
+                      this.$router.push({ name: 'users.index' })
+                    }
+                  }, (error) => {
+                    this.saving = false
+                    console.log(error)
+                  })
+                } else {
+                  this.saving = false
+                  this.$router.push({ name: 'users.index' })
+                }
+              } else {
+                this.saving = false
               }
             }, (error) => {
+              this.saving = false
               console.log(error)
+              this.$message({
+                showClose: true,
+                message: 'Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.',
+                type: 'error'
+              })
             })
           } else {
-            this.$router.push({ name: 'users.index' })
+            this.$message.warning('Ops, preencha corretamente o formulário!')
+            return false
           }
-        }
-      }, (error) => {
-        console.log(error)
-        this.$message({
-          showClose: true,
-          message: 'Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.',
-          type: 'error'
         })
+      }
+    },
+    computed: {
+      form () {
+        return this.$store.state.user.user || new User()
+      }
+    },
+    beforeCreate () {
+      this.$loader.open()
+    },
+    created () {
+      this.$store.dispatch('getUser', this.$route.params.id).then(() => {
+        this.$loader.close()
       })
     },
-    deletePhoto () {
-      if (Number.isInteger(this.photo.id)) {
-        this.$store.dispatch('deletePhoto', this.photo.id).then((response) => {
-          if (response.ok) {
-            this.form.photo = {
-              id: null,
-              photo: null
-            }
-            this.imageUrl = ''
-          }
-        }, (error) => {
-          console.log(error)
-        })
-      } else {
-        this.file = {}
-        this.imageUrl = ''
-      }
-    },
-    onChange (file, fileList) {
-      console.log('onChange...')
-      this.file = file.raw
-      this.imageUrl = file.url
-    },
-    pesquisarCep () {
-      if (this.form.address.zip_code !== '') {
-        this.cep.pesquisar(this.form.address.zip_code, this.form.address)
-      }
+    beforeDestroy () {
+      this.$store.commit('setUser', {})
     }
-  },
-  computed: {
-    form () {
-      return this.$store.state.user.user
-    },
-    photo () {
-      if (!this.form.photo) {
-        return {
-          id: null,
-          photo: null
-        }
-      }
-      return this.form.photo
-    },
-    photoUrl () {
-      let url = ''
-      if (this.photo.id > 0) {
-        url = this.$store.getters.urlPhoto(this.photo.id)
-      }
-      this.imageUrl = url
-      return url
-    }
-  },
-  created () {
-    this.$store.dispatch('getUser', this.$route.params.id)
   }
-}
 </script>
-
-<style>
-.uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.uploader .el-upload:hover {
-  border-color: #20a0ff;
-}
-.uploader .el-icon-plus,
-.uploader .el-icon-close {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-.image {
-  position: relative;
-  z-index: 1;
-}
-.image:before {
-  position: absolute;
-  content: "";
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0,0,0,.8);
-  z-index: 2;
-  display: none;
-}
-.image:hover:before {
-  display: block;
-}
-.image img {
-  display: block;
-  max-width: 100%;
-  min-width: 178px;
-  min-height: 178px;
-  height: auto;
-  z-index: 1;
-}
-.image button {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -moz-transform: translateX(-50%) translateY(-50%);
-  -webkit-transform: translateX(-50%) translateY(-50%);
-  -o-transform: translateX(-50%) translateY(-50%);
-  -ms-transform: translateX(-50%) translateY(-50%);
-  transform: translateX(-50%) translateY(-50%);
-  display: none;
-  z-index: 3;
-}
-.image:hover button {
-  display: block;
-}
-</style>

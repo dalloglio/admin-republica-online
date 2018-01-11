@@ -14,7 +14,7 @@
 
     <el-table :data="categories" empty-text="Não há registros..." :default-sort="{ prop: 'title', order: 'ascending' }" border stripe fit>
       <el-table-column prop="title" label="Título" sortable></el-table-column>
-      <el-table-column prop="status" label="Ativo" sortable :formatter="status"></el-table-column>
+      <el-table-column prop="description" label="Descrição" sortable></el-table-column>
       <el-table-column prop="created_at" label="Data de criação" sortable :formatter="datetimeToBr"></el-table-column>
       <el-table-column
         align="center"
@@ -36,12 +36,6 @@
 export default {
   name: 'categories-index',
   methods: {
-    status (row, column, status) {
-      if (status) {
-        return 'Sim'
-      }
-      return 'Não'
-    },
     datetimeToBr (row, column, date) {
       return this.date.toDateTimeBr(date)
     },

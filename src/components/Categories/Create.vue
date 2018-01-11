@@ -43,6 +43,7 @@
         this.$refs.form.validate((valid) => {
           if (valid) {
             this.saving = true
+            this.form.status = 1
             this.$store.dispatch('createCategory', this.form).then((response) => {
               this.saving = false
               if (response.ok) {

@@ -45,6 +45,7 @@
         this.$refs.form.validate((valid) => {
           if (valid) {
             this.saving = true
+            this.form.status = 1
             let params = {
               id: this.$route.params.id,
               data: this.form

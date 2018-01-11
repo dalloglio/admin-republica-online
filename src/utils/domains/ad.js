@@ -7,7 +7,7 @@ class Ad extends Model {
     title: '',
     description: '',
     price: '',
-    status: '',
+    status: 0,
     category_id: '',
     user_id: '',
     address: new Address(),

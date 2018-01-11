@@ -57,18 +57,6 @@ const rules = {
   ],
   'address.show_on_map': [
     { required: true, message: 'A forma de exibição no mapa é obrigatória' }
-  ],
-  'contact.name': [
-    { required: true, message: 'O nome é obrigatório' },
-    { max: 200, message: 'O nome deve ter até 200 caracteres' }
-  ],
-  'contact.cellphone': [
-    { required: true, message: 'O celular é obrigatório' },
-    { min: 15, max: 15, message: 'O celular deve ter 15 caracteres' }
-  ],
-  'contact.whatsapp': [
-    { required: true, message: 'O WhatApp é obrigatório' },
-    { min: 15, max: 15, message: 'O WhatApp deve ter 15 caracteres' }
   ]
 }
 

@@ -11,6 +11,10 @@ const rules = {
     { required: true, message: 'O sobrenome é obrigatório' },
     { min: 3, max: 500, message: 'O sobrenome deve ter de 3 até 200 caracteres' }
   ],
+  cpf: [
+    { required: true, message: 'O CPF é obrigatório' },
+    { min: 14, max: 14, message: 'O CPF deve ter 14 caracteres' }
+  ],
   birthday: [
     { required: true, message: 'A data de nascimento é obrigatório' }
   ],

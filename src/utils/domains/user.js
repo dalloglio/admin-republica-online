@@ -10,6 +10,7 @@ class User extends Model {
     password: '',
     gender: '',
     birthday: '',
+    cpf: '',
     status: 0,
     address: new Address()
   }) {

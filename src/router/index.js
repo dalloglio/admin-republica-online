@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { store } from '../store'
+import { Message } from 'element-ui'
 
 // Auth
 import AuthLogin from '@/components/Auth/Login'
@@ -109,7 +111,20 @@ router.beforeEach((to, from, next) => {
         name: 'auth.login'
       })
     } else {
-      next()
+      let user = store.state.auth.user || {}
+      if (user.id) {
+        if (user.admin === false) {
+          Message.warning('As informações fornecidas não foram encontradas.')
+          Vue.auth.logout()
+        } else if (user.status === false) {
+          Message.warning('Você ainda não ativou o seu usuário.')
+          Vue.auth.logout()
+        } else {
+          next()
+        }
+      } else {
+        next()
+      }
     }
   } else {
     next()

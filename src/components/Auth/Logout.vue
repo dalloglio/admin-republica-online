@@ -4,6 +4,7 @@
 export default {
   beforeCreate () {
     this.$auth.logout()
+    this.$store.commit('setAuthUser', {})
   }
 }
 </script>

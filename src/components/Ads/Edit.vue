@@ -70,10 +70,8 @@
               } else {
                 this.saving = false
               }
-            }, (error) => {
+            }, () => {
               this.saving = false
-              console.log(error)
-              this.$message.error('Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.')
             })
           } else {
             this.$message.warning('Ops, preencha corretamente o formulário!')

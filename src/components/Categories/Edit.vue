@@ -55,14 +55,8 @@
               if (response.ok) {
                 this.$router.push({ name: 'categories.index' })
               }
-            }, (error) => {
+            }, () => {
               this.saving = false
-              console.log(error)
-              this.$message({
-                showClose: true,
-                message: 'Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.',
-                type: 'error'
-              })
             })
           } else {
             this.$message.warning('Ops, preencha corretamente o formulário!')

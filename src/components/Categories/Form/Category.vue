@@ -11,9 +11,9 @@
         :filter-method="filterMethod" filter-placeholder="Pesquisar filtro..." v-model="model.filters" :data="filters">
       </el-transfer>
     </el-form-item>
-    <el-form-item label="Ativo" prop="status">
-      <el-switch v-model="model.status" on-color="#13ce66" off-color="#ff4949" :on-value="true" :off-value="false" on-text="Sim" off-text="Não"></el-switch>
-    </el-form-item>
+    <!-- <el-form-item label="Ativo" prop="status">
+      <el-switch v-model="model.status" on-color="#13ce66" off-color="#ff4949" :on-value="1" :off-value="0" on-text="Sim" off-text="Não"></el-switch>
+    </el-form-item> -->
   </el-card>
 </template>
 

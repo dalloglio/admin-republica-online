@@ -42,6 +42,7 @@ export default {
 
       logout () {
         this.destroyToken()
+        localStorage.removeItem('vuex')
         router.push({ name: LOGOUT_REDIRECT })
       },
 

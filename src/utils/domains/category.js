@@ -4,7 +4,7 @@ class Category extends Model {
   constructor (data = {
     title: '',
     description: '',
-    status: '',
+    status: 0,
     filters: []
   }) {
     super(data)

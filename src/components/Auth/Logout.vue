@@ -4,7 +4,7 @@
 export default {
   beforeCreate () {
     this.$auth.logout()
-    localStorage.removeItem('vuex')
+    this.$store.commit('setAuthUser', {})
   }
 }
 </script>

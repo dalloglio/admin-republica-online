@@ -1,6 +1,6 @@
-# admin
+# REPÚBLICA ONLINE - ADMIN
 
-> Admin
+> Projeto para administração do conteúdo do site republica.online.
 
 ## Build Setup
 
